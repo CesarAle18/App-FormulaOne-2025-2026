@@ -74,11 +74,17 @@ public class Main {
                     salir = true;
                     imprimirMensaje("Gracias por usar F1 Manager. Hasta pronto!", "INFO");
                 }
-                default -> imprimirMensaje("Opcion invalida. Intente nuevamente.", "ERROR");
+                default -> {
+                    if (opcion != -1) {
+                        imprimirMensaje("Opcion invalida. Intente nuevamente.", "ERROR");
+                    }
+                }
             }
 
-            if (!salir && opcion != 0) {
+            if (!salir && opcion != 0 && opcion != -1) {
                 esperarEnter();
+            } else if (opcion == -1) {
+                System.out.println();
             }
         }
 
@@ -314,11 +320,17 @@ public class Main {
                 case 3 -> eliminarResultados2026();
                 case 4 -> mostrarCarrerasEditables();
                 case 0 -> volver = true;
-                default -> imprimirMensaje("Opcion invalida.", "ERROR");
+                default -> {
+                    if (opcion != -1) {
+                        imprimirMensaje("Opcion invalida.", "ERROR");
+                    }
+                }
             }
 
-            if (!volver && opcion != 0) {
+            if (!volver && opcion != 0 && opcion != -1) {
                 esperarEnter();
+            } else if (opcion == -1) {
+                System.out.println();
             }
         }
     }
@@ -639,7 +651,6 @@ public class Main {
             if (input.isEmpty()) return -1;
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            imprimirMensaje("Entrada invalida. Ingrese un numero.", "ADVERTENCIA");
             return -1;
         }
     }
@@ -649,7 +660,11 @@ public class Main {
     }
 
     private static void esperarEnter() {
-        System.out.print("\nPresione ENTER para continuar...");
-        scanner.nextLine();
+        System.out.print("\n> Presione ENTER para continuar... ");
+        System.out.flush();
+        String dummy = scanner.nextLine();
+        if (!dummy.isEmpty()) {
+            scanner.nextLine();
+        }
     }
 }
