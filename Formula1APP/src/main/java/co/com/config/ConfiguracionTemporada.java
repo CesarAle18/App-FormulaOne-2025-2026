@@ -4,44 +4,33 @@ import java.time.LocalDate;
 
 public class ConfiguracionTemporada {
 
-    // Temporadas disponibles
-    public static final int TEMPORADA_2024 = 2024;
     public static final int TEMPORADA_2025 = 2025;
-    public static final int TEMPORADA_ACTUAL = TEMPORADA_2025;
+    public static final int TEMPORADA_2026 = 2026;
+    public static final int TEMPORADA_ACTUAL = TEMPORADA_2026;
 
-    // Fecha de congelación del proyecto
-    // Después de esta fecha, se pueden ingresar resultados manualmente
-    public static final LocalDate FECHA_CONGELACION = LocalDate.of(2025, 10, 27);
+    public static final LocalDate FECHA_CONGELACION = LocalDate.of(2026, 5, 3);
 
-    /**
-     * Verifica si una fecha está después de la fecha de congelación.
-     *
-     * @param fecha Fecha a verificar
-     * @return true si está después de la congelación
-     */
     public static boolean esDespuesDeCongelacion(LocalDate fecha) {
         return fecha.isAfter(FECHA_CONGELACION);
     }
 
-    /**
-     * Verifica si una carrera permite ingreso manual de resultados.
-     *
-     * @param fechaCarrera Fecha de la carrera
-     * @return true si permite ingreso manual
-     */
     public static boolean permiteIngresoManual(LocalDate fechaCarrera) {
-        return esDespuesDeCongelacion(fechaCarrera) || fechaCarrera.equals(FECHA_CONGELACION);
+        return esDespuesDeCongelacion(fechaCarrera);
     }
 
-    /**
-     * Obtiene un mensaje sobre el estado de congelación.
-     *
-     * @return Mensaje informativo
-     */
+    public static boolean permiteModificarResultado(LocalDate fechaCarrera) {
+        return esDespuesDeCongelacion(fechaCarrera);
+    }
+
+    public static boolean esCarreraFutura(LocalDate fechaCarrera) {
+        return fechaCarrera.isAfter(FECHA_CONGELACION);
+    }
+
     public static String getMensajeCongelacion() {
         return String.format(
-                "Fecha de congelación del proyecto: %s\n" +
-                        "Las carreras posteriores a esta fecha permiten ingreso manual de resultados.",
+                "Fecha de congelacion del proyecto: %s\n" +
+                        "Ultimo evento con resultados: 2026-05-03 (Miami GP - Ronda 4)\n" +
+                        "Solo se pueden gestionar carreras posteriores a esta fecha.",
                 FECHA_CONGELACION
         );
     }

@@ -20,10 +20,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.*;
 
-/**
- * Servicio principal para ejecutar simulaciones de carreras.
- * Aplica patrones Strategy, Factory y Builder.
- */
 public class SimulacionService {
     private static final Logger logger = LoggerFactory.getLogger(SimulacionService.class);
 
@@ -33,12 +29,9 @@ public class SimulacionService {
     private final F1Servicio f1Servicio = new F1Servicio();
 
     private SimulacionStrategy estrategia;
-
-    // Guarda las últimas carreras simuladas
     private final List<Carrera> ultimasCarrerasSimuladas = new ArrayList<>();
 
     public SimulacionService() {
-        // Por defecto: usar estrategia ponderada por puntos (ProbabilidadStrategy)
         Map<Long, BigDecimal> puntosPorPiloto = new HashMap<>();
         this.estrategia = new ProbabilidadStrategy(puntosPorPiloto);
     }
@@ -47,33 +40,33 @@ public class SimulacionService {
         this.estrategia = estrategia;
     }
 
-    /**
-     * Simula las dos primeras carreras posteriores a la fecha de congelación.
-     */
-    public int simularCarrerasPosteriores() {
-        logger.info("Iniciando simulación de carreras posteriores a la fecha de congelación...");
+    public List<Carrera> obtenerCarrerasPendientes() {
+        List<Carrera> carreras2026 = carreraDAO.findByTemporada(ConfiguracionTemporada.TEMPORADA_2026);
 
-        List<Carrera> carreras2025 = carreraDAO.findByTemporada(ConfiguracionTemporada.TEMPORADA_2025);
-
-        // Filtrar solo las carreras después de la fecha de congelación
-        List<Carrera> carrerasPosteriores = carreras2025.stream()
+        List<Carrera> carrerasPendientes = carreras2026.stream()
                 .filter(c -> c.getFecha().isAfter(ConfiguracionTemporada.FECHA_CONGELACION))
                 .sorted(Comparator.comparing(Carrera::getFecha))
                 .toList();
 
-        if (carrerasPosteriores.isEmpty()) {
-            logger.warn("No hay carreras posteriores a la fecha de congelación");
-            System.out.println("\n[ADVERTENCIA] No hay carreras posteriores a la fecha de congelación.\n");
+        return carrerasPendientes;
+    }
+
+    public int simularCarrerasPosteriores() {
+        logger.info("Iniciando simulacion de carreras posteriores a la fecha de congelacion...");
+
+        List<Carrera> carrerasPendientes = obtenerCarrerasPendientes();
+
+        if (carrerasPendientes.isEmpty()) {
+            logger.warn("No hay carreras posteriores a la fecha de congelacion");
+            System.out.println("\n[ADVERTENCIA] No hay carreras posteriores a la fecha de congelacion.\n");
             return 0;
         }
 
         int simuladas = 0;
         List<Carrera> carrerasSimuladas = new ArrayList<>();
 
-        for (int i = 0; i < Math.min(2, carrerasPosteriores.size()); i++) {
-            Carrera carrera = carrerasPosteriores.get(i);
-
-            logger.info(" Simulando carrera posterior a la congelación: {} (ID: {}, Fecha: {})",
+        for (Carrera carrera : carrerasPendientes) {
+            logger.info(" Simulando carrera: {} (ID: {}, Fecha: {})",
                     carrera.getNombreGp(), carrera.getId(), carrera.getFecha());
 
             simularCarrera(carrera);
@@ -81,19 +74,17 @@ public class SimulacionService {
             carrerasSimuladas.add(carrera);
         }
 
-        // Guardamos las últimas simuladas para consultarlas luego con la opción 8
         ultimasCarrerasSimuladas.clear();
         ultimasCarrerasSimuladas.addAll(carrerasSimuladas);
 
-        logger.info("Simulación completada: {} carreras generadas", simuladas);
+        logger.info("Simulacion completada: {} carreras generadas", simuladas);
 
-        // Mostrar resumen rápido en consola
         if (!carrerasSimuladas.isEmpty()) {
-            System.out.println("\n[RESUMEN DE SIMULACIÓN]");
+            System.out.println("\n[RESUMEN DE SIMULACION]");
             System.out.println("-----------------------------------------------");
             for (Carrera c : carrerasSimuladas) {
                 long totalResultados = resultadoDAO.countByCarrera(c.getId());
-                System.out.printf("Carrera: %-30s  →  %d resultados generados%n",
+                System.out.printf("Carrera: %-30s  ->  %d resultados generados%n",
                         c.getNombreGp(), totalResultados);
             }
             System.out.println("-----------------------------------------------\n");
@@ -102,9 +93,22 @@ public class SimulacionService {
         return simuladas;
     }
 
-    /**
-     * Simula una carrera completa con tiempos, posiciones y resultados.
-     */
+    public int simularCarreraSeleccionada(Carrera carrera) {
+        logger.info("Simulando carrera seleccionada: {} (ID: {}, Fecha: {})",
+                carrera.getNombreGp(), carrera.getId(), carrera.getFecha());
+
+        simularCarrera(carrera);
+
+        ultimasCarrerasSimuladas.clear();
+        ultimasCarrerasSimuladas.add(carrera);
+
+        long totalResultados = resultadoDAO.countByCarrera(carrera.getId());
+        System.out.println("\n[RESUMEN]");
+        System.out.println("Carrera: " + carrera.getNombreGp() + " -> " + totalResultados + " resultados generados\n");
+
+        return (int) totalResultados;
+    }
+
     public void simularCarrera(Carrera carrera) {
         logger.info("Simulando carrera: {}", carrera.getNombreGp());
 
@@ -121,7 +125,6 @@ public class SimulacionService {
         try {
             em.getTransaction().begin();
 
-            // Eliminar resultados previos si existen
             List<Resultado> existentes = resultadoDAO.findByCarrera(carrera.getId());
             for (Resultado r : existentes) {
                 em.remove(em.merge(r));
@@ -130,7 +133,6 @@ public class SimulacionService {
             Random random = new Random();
             int vueltasTotales = 50 + random.nextInt(10);
 
-            // Tiempo base para el ganador
             int minutosBase = 90 + random.nextInt(10);
             int segundosBase = random.nextInt(60);
             int milisBase = random.nextInt(1000);
@@ -140,7 +142,7 @@ public class SimulacionService {
                 Piloto piloto = posiciones.get(i);
                 int posicion = i + 1;
                 boolean retirado = posicion > 18 && random.nextDouble() < 0.2;
-                String motivo = retirado ? "Falla mecánica" : null;
+                String motivo = retirado ? "Falla mecanica" : null;
                 boolean vueltaRapida = posicion == 1 && random.nextDouble() < 0.4;
 
                 BigDecimal puntos = retirado ? BigDecimal.ZERO :
@@ -180,36 +182,39 @@ public class SimulacionService {
         }
     }
 
-    /**
-     * Muestra los resultados de las últimas carreras simuladas (opción 9 del menú)
-     */
     public void mostrarUltimosResultadosSimulados() {
         if (ultimasCarrerasSimuladas.isEmpty()) {
-            System.out.println("\n[INFO] No hay simulaciones recientes. Ejecuta primero la opción 7.\n");
+            System.out.println("\n[INFO] No hay simulaciones recientes. Ejecuta primero la opcion 7.\n");
             return;
         }
 
-        System.out.println("\n RESULTADOS DE LAS ÚLTIMAS CARRERAS SIMULADAS");
+        System.out.println("\n RESULTADOS DE LAS ULTIMAS CARRERAS SIMULADAS");
         System.out.println("---------------------------------------------------------------");
 
         for (Carrera c : ultimasCarrerasSimuladas) {
             List<Resultado> resultados = resultadoDAO.findByCarrera(c.getId());
 
-            System.out.printf("\n %s (%s)\n", c.getNombreGp(), c.getFecha());
+            System.out.printf("\n %s (%s)%n", c.getNombreGp(), c.getFecha());
             System.out.println("---------------------------------------------------------------");
 
             if (resultados.isEmpty()) {
-                System.out.println("⚠️  No hay resultados registrados para esta carrera.");
+                System.out.println(" No hay resultados registrados para esta carrera.");
                 continue;
             }
 
             resultados.stream()
                     .sorted(Comparator.comparing(Resultado::getPosicionFinal))
-                    .limit(5)
-                    .forEach(r -> System.out.printf("Pos %d - Piloto #%d - %.0f pts\n",
-                            r.getPosicionFinal(), r.getPiloto().getId(), r.getPuntosObtenidos()));
+                    .forEach(r -> {
+                        String estado = r.getRetirado() ? "RET" : "";
+                        System.out.printf("Pos %2d - %-25s %-20s %5.1f pts %s%n",
+                                r.getPosicionFinal(),
+                                r.getPiloto().getNombre(),
+                                r.getPiloto().getConstructor() != null ? r.getPiloto().getConstructor().getNombre() : "",
+                                r.getPuntosObtenidos(),
+                                estado);
+                    });
 
-            System.out.printf("Total resultados: %d\n", resultados.size());
+            System.out.printf("Total resultados: %d%n", resultados.size());
         }
 
         System.out.println("---------------------------------------------------------------\n");

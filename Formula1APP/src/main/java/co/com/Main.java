@@ -17,12 +17,8 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.*;
 
-//simulación en java de formula1
 import co.com.simulacion.service.SimulacionService;
 
-/**
- * Clase principal con menú de consola para consultar datos de temporadas de Formula 1.
- */
 public class Main {
     private static final F1Servicio servicio = new F1Servicio();
     private static final ResultadoService resultadoService = new ResultadoService();
@@ -32,11 +28,10 @@ public class Main {
     private static final String SEPARADOR_GRUESO = "=".repeat(100);
     private static final String SEPARADOR_FINO = "-".repeat(100);
 
-    private static int temporadaActual = 2024;
+    private static int temporadaActual = 2026;
 
     public static void main(String[] args) {
 
-        // 🔇 Desactivar logs de bajo nivel (HikariCP, JDBC, Hibernate)
         Logger rootLogger = Logger.getLogger("");
         rootLogger.setLevel(Level.SEVERE);
         for (Handler h : rootLogger.getHandlers()) {
@@ -58,17 +53,17 @@ public class Main {
                 case 4 -> mostrarResultadosCarrera(temporadaActual);
                 case 5 -> mostrarCircuitos(temporadaActual);
                 case 6 -> {
-                    if (temporadaActual == 2025) {
-                        menuGestionResultados2025();
+                    if (temporadaActual == 2026) {
+                        menuGestionResultados2026();
                     } else {
-                        imprimirMensaje("La gestión de resultados solo está disponible para la temporada 2025.", "ADVERTENCIA");
+                        imprimirMensaje("La gestion de resultados solo esta disponible para la temporada 2026.", "ADVERTENCIA");
                     }
                 }
                 case 7 -> {
-                    if (temporadaActual == 2025) {
+                    if (temporadaActual == 2026) {
                         ejecutarSimulacionCarreras();
                     } else {
-                        imprimirMensaje("La simulación solo está disponible para la temporada 2025.", "ADVERTENCIA");
+                        imprimirMensaje("La simulacion solo esta disponible para la temporada 2026.", "ADVERTENCIA");
                     }
                 }
                 case 8 -> {
@@ -79,7 +74,7 @@ public class Main {
                     salir = true;
                     imprimirMensaje("Gracias por usar F1 Manager. Hasta pronto!", "INFO");
                 }
-                default -> imprimirMensaje("Opción inválida. Intente nuevamente.", "ERROR");
+                default -> imprimirMensaje("Opcion invalida. Intente nuevamente.", "ERROR");
             }
 
             if (!salir && opcion != 0) {
@@ -91,22 +86,19 @@ public class Main {
     }
 
     private static void seleccionarTemporada() {
-        imprimirEncabezado("SELECCIÓN DE TEMPORADA");
-        System.out.println("1. Temporada 2024 (Solo consulta - Datos históricos)");
-        System.out.println("2. Temporada 2025 (Consulta + Ingreso manual de resultados)");
+        imprimirEncabezado("SELECCION DE TEMPORADA");
+        System.out.println("1. Temporada 2025 (Solo consulta)");
+        System.out.println("2. Temporada 2026 (Consulta + Gestion + Simulacion)");
         System.out.println(SEPARADOR_FINO);
         System.out.print("Seleccione temporada: ");
 
         int opcion = leerOpcion();
-        temporadaActual = (opcion == 1) ? 2024 : 2025;
+        temporadaActual = (opcion == 1) ? 2025 : 2026;
 
         imprimirMensaje("Temporada seleccionada: " + temporadaActual, "EXITO");
 
-        if (temporadaActual == 2025) {
-            System.out.println("\nInformación importante:");
-            System.out.println(ConfiguracionTemporada.getMensajeCongelacion());
-            System.out.println("Puede ingresar resultados manualmente para carreras posteriores a esta fecha.");
-        }
+        System.out.println("\n" + ConfiguracionTemporada.getMensajeCongelacion());
+        System.out.println("\nSolo se permite gestionar resultados de carreras posteriores a la fecha de congelacion.");
     }
 
     private static void mostrarMenuPrincipal() {
@@ -114,32 +106,28 @@ public class Main {
 
         System.out.println("CONSULTAS");
         System.out.println("  1. Ver calendario de carreras");
-        System.out.println("  2. Ver clasificación de pilotos");
-        System.out.println("  3. Ver clasificación de constructores");
+        System.out.println("  2. Ver clasificacion de pilotos");
+        System.out.println("  3. Ver clasificacion de constructores");
         System.out.println("  4. Ver resultados de una carrera");
         System.out.println("  5. Ver circuitos");
 
-        if (temporadaActual == 2025) {
-            System.out.println("\nGESTION (Solo temporada 2025)");
-            System.out.println("  6. Gestión de resultados (Ingresar/Modificar/Eliminar)");
-            System.out.println("  7. Simular carreras posteriores a la fecha de congelación");
-            System.out.println("  8. Ver resultados de las últimas simulaciones");
+        if (temporadaActual == 2026) {
+            System.out.println("\nGESTION (Solo temporada 2026)");
+            System.out.println("  6. Gestion de resultados (Ingresar/Modificar/Eliminar)");
+            System.out.println("  7. Simular carreras");
+            System.out.println("  8. Ver resultados de las ultimas simulaciones");
         }
 
         System.out.println("\nOPCIONES");
         System.out.println("  9. Cambiar de temporada");
         System.out.println("  0. Salir");
         System.out.println(SEPARADOR_FINO);
-        System.out.print("Seleccione una opción: ");
+        System.out.print("Seleccione una opcion: ");
     }
 
     private static void cambiarTemporada() {
         seleccionarTemporada();
     }
-
-    // ============================================================================
-    // MÉTODOS DE CONSULTA
-    // ============================================================================
 
     private static void mostrarCalendario(int anio) {
         List<Carrera> carreras = servicio.getCarreras(anio);
@@ -172,7 +160,7 @@ public class Main {
         List<Map<String, Object>> clasificacion = servicio.getClasificacionPilotos(anio);
 
         if (clasificacion.isEmpty()) {
-            imprimirMensaje("No hay datos de clasificación de pilotos para " + anio + ".", "ADVERTENCIA");
+            imprimirMensaje("No hay datos de clasificacion de pilotos para " + anio + ".", "ADVERTENCIA");
             return;
         }
 
@@ -200,7 +188,7 @@ public class Main {
         List<Map<String, Object>> clasificacion = servicio.getClasificacionConstructores(anio);
 
         if (clasificacion.isEmpty()) {
-            imprimirMensaje("No hay datos de clasificación de constructores para " + anio + ".", "ADVERTENCIA");
+            imprimirMensaje("No hay datos de clasificacion de constructores para " + anio + ".", "ADVERTENCIA");
             return;
         }
 
@@ -228,7 +216,7 @@ public class Main {
 
         Optional<Carrera> carreraOpt = servicio.getCarreraById(id);
         if (carreraOpt.isEmpty()) {
-            imprimirMensaje("No se encontró la carrera con ID: " + id, "ERROR");
+            imprimirMensaje("No se encontro la carrera con ID: " + id, "ERROR");
             return;
         }
 
@@ -300,34 +288,33 @@ public class Main {
         System.out.println("Total de circuitos: " + circuitos.size());
     }
 
-    // ============================================================================
-    // GESTIÓN DE RESULTADOS 2025
-    // ============================================================================
-
-    private static void menuGestionResultados2025() {
+    private static void menuGestionResultados2026() {
         boolean volver = false;
 
         while (!volver) {
-            imprimirEncabezado("GESTION DE RESULTADOS - TEMPORADA 2025");
+            imprimirEncabezado("GESTION DE RESULTADOS - TEMPORADA 2026");
             System.out.println(ConfiguracionTemporada.getMensajeCongelacion());
+            System.out.println(SEPARADOR_FINO);
+            System.out.println("Solo se permite gestionar carreras posteriores a la fecha de congelacion.");
+            System.out.println("No se permite modificar resultados anteriores a 2026-05-03.");
             System.out.println(SEPARADOR_FINO);
             System.out.println("1. Ingresar resultados de una carrera");
             System.out.println("2. Ver resultados de una carrera (con detalle)");
             System.out.println("3. Eliminar resultados de una carrera");
-            System.out.println("4. Ver carreras disponibles para ingreso");
-            System.out.println("0. Volver al menú principal");
+            System.out.println("4. Ver carreras disponibles para gestion");
+            System.out.println("0. Volver al menu principal");
             System.out.println(SEPARADOR_FINO);
-            System.out.print("Seleccione una opción: ");
+            System.out.print("Seleccione una opcion: ");
 
             int opcion = leerOpcion();
 
             switch (opcion) {
-                case 1 -> ingresarResultados2025();
+                case 1 -> ingresarResultados2026();
                 case 2 -> verResultadosDetallados();
-                case 3 -> eliminarResultados2025();
+                case 3 -> eliminarResultados2026();
                 case 4 -> mostrarCarrerasEditables();
                 case 0 -> volver = true;
-                default -> imprimirMensaje("Opción inválida.", "ERROR");
+                default -> imprimirMensaje("Opcion invalida.", "ERROR");
             }
 
             if (!volver && opcion != 0) {
@@ -338,15 +325,15 @@ public class Main {
 
     private static void mostrarCarrerasEditables() {
         try {
-            List<Carrera> carreras = resultadoService.obtenerCarrerasEditables(2025);
+            List<Carrera> carreras = resultadoService.obtenerCarrerasEditables(2026);
 
             if (carreras.isEmpty()) {
-                imprimirMensaje("No hay carreras disponibles para ingreso manual en 2025.", "ADVERTENCIA");
-                System.out.println("Verifique que la temporada 2025 esté inicializada.");
+                imprimirMensaje("No hay carreras disponibles para gestion en 2026.", "ADVERTENCIA");
+                System.out.println("Verifique que la temporada 2026 tenga carreras pendientes.");
                 return;
             }
 
-            imprimirEncabezado("CARRERAS DISPONIBLES PARA INGRESO MANUAL - 2025");
+            imprimirEncabezado("CARRERAS DISPONIBLES PARA GESTION - 2026");
             System.out.printf("%-8s %-40s %-35s %-15s%n", "ID", "Gran Premio", "Circuito", "Fecha");
             System.out.println(SEPARADOR_FINO);
 
@@ -368,10 +355,10 @@ public class Main {
         }
     }
 
-    private static void ingresarResultados2025() {
+    private static void ingresarResultados2026() {
         imprimirEncabezado("INGRESAR RESULTADOS DE CARRERA");
 
-        List<Carrera> carrerasEditables = resultadoService.obtenerCarrerasEditables(2025);
+        List<Carrera> carrerasEditables = resultadoService.obtenerCarrerasEditables(2026);
 
         if (carrerasEditables.isEmpty()) {
             imprimirMensaje("No hay carreras disponibles para ingreso manual.", "ADVERTENCIA");
@@ -388,11 +375,11 @@ public class Main {
                     c.getFecha());
         }
 
-        System.out.print("\nSeleccione el número de carrera (0 para cancelar): ");
+        System.out.print("\nSeleccione el numero de carrera (0 para cancelar): ");
         int seleccion = leerOpcion();
 
         if (seleccion == 0 || seleccion > carrerasEditables.size()) {
-            System.out.println("Operación cancelada.");
+            System.out.println("Operacion cancelada.");
             return;
         }
 
@@ -405,11 +392,11 @@ public class Main {
 
         if (!resultadosExistentes.isEmpty()) {
             System.out.println("\nADVERTENCIA: Esta carrera ya tiene " + resultadosExistentes.size() + " resultados registrados.");
-            System.out.print("¿Desea reemplazarlos? (S/N): ");
+            System.out.print("Desea reemplazarlos? (S/N): ");
             String respuesta = leerTexto().toUpperCase();
 
             if (!respuesta.equals("S")) {
-                System.out.println("Operación cancelada.");
+                System.out.println("Operacion cancelada.");
                 return;
             }
         }
@@ -425,14 +412,14 @@ public class Main {
         System.out.println("INGRESO DE RESULTADOS");
         System.out.println(SEPARADOR_FINO);
         System.out.println("Ingrese los resultados de cada piloto.");
-        System.out.println("Para pilotos que no participaron, ingrese posición 0 o presione ENTER.");
+        System.out.println("Para pilotos que no participaron, ingrese posicion 0 o presione ENTER.");
         System.out.println(SEPARADOR_FINO);
 
         List<ResultadoDTO> resultados = new ArrayList<>();
 
         for (Piloto piloto : pilotos) {
             System.out.println("\n" + piloto.getNombre() + " (#" + piloto.getDorsal() + ")");
-            System.out.print("   Posición final (1-20, 0 o ENTER=no participó): ");
+            System.out.print("   Posicion final (1-20, 0 o ENTER=no participo): ");
 
             String inputPosicion = leerTexto();
 
@@ -444,23 +431,22 @@ public class Main {
                 int posicion = Integer.parseInt(inputPosicion);
 
                 if (posicion < 1 || posicion > 20) {
-                    System.out.println("   Posición inválida. Piloto omitido.");
+                    System.out.println("   Posicion invalida. Piloto omitido.");
                     continue;
                 }
 
                 ResultadoDTO dto = new ResultadoDTO(piloto.getId(), posicion);
 
-                System.out.print("   ¿Retirado? (S/N): ");
+                System.out.print("   Retirado? (S/N): ");
                 String retirado = leerTexto().toUpperCase();
                 dto.setRetirado(retirado.equals("S"));
 
                 if (dto.getRetirado()) {
                     System.out.print("   Motivo de retiro: ");
                     dto.setMotivoRetiro(leerTexto());
-                    dto.setMotivoRetiro(leerTexto());
                 } else {
                     if (posicion <= 10) {
-                        System.out.print("   ¿Vuelta más rápida? (S/N): ");
+                        System.out.print("   Vuelta mas rapida? (S/N): ");
                         String vuelaRapida = leerTexto().toUpperCase();
                         dto.setVuelaRapida(vuelaRapida.equals("S"));
                     }
@@ -476,7 +462,7 @@ public class Main {
                 System.out.println("   Resultado registrado");
 
             } catch (NumberFormatException e) {
-                System.out.println("   Entrada inválida. Piloto omitido.");
+                System.out.println("   Entrada invalida. Piloto omitido.");
             }
         }
 
@@ -486,12 +472,12 @@ public class Main {
         }
 
         System.out.println("\n" + SEPARADOR_FINO);
-        System.out.println("RESUMEN: Se ingresarán resultados de " + resultados.size() + " pilotos");
-        System.out.print("¿Confirmar ingreso? (S/N): ");
+        System.out.println("RESUMEN: Se ingresaran resultados de " + resultados.size() + " pilotos");
+        System.out.print("Confirmar ingreso? (S/N): ");
         String confirmar = leerTexto().toUpperCase();
 
         if (!confirmar.equals("S")) {
-            System.out.println("Operación cancelada.");
+            System.out.println("Operacion cancelada.");
             return;
         }
 
@@ -500,7 +486,7 @@ public class Main {
 
             imprimirMensaje("Resultados ingresados exitosamente!", "EXITO");
             System.out.println("Total de resultados: " + ingresados);
-            System.out.println("\nLas clasificaciones de pilotos y constructores se actualizaron automáticamente.");
+            System.out.println("\nLas clasificaciones de pilotos y constructores se actualizaron automaticamente.");
 
         } catch (Exception e) {
             imprimirMensaje("Error al ingresar resultados: " + e.getMessage(), "ERROR");
@@ -508,21 +494,36 @@ public class Main {
     }
 
     private static void verResultadosDetallados() {
-        mostrarResultadosCarrera(2025);
+        mostrarResultadosCarrera(2026);
     }
 
-    private static void eliminarResultados2025() {
+    private static void eliminarResultados2026() {
         imprimirEncabezado("ELIMINAR RESULTADOS DE CARRERA");
+        System.out.println("Solo se pueden eliminar resultados de carreras posteriores a la fecha de congelacion.");
+        System.out.println();
 
         System.out.print("Ingrese el ID de la carrera: ");
         int carreraId = leerOpcion();
 
         if (carreraId <= 0) {
-            System.out.println("ID inválido.");
+            System.out.println("ID invalido.");
             return;
         }
 
         try {
+            Optional<Carrera> carreraOpt = servicio.getCarreraById((long) carreraId);
+            if (carreraOpt.isEmpty()) {
+                imprimirMensaje("No se encontro la carrera con ID: " + carreraId, "ERROR");
+                return;
+            }
+
+            Carrera carrera = carreraOpt.get();
+
+            if (!ConfiguracionTemporada.esDespuesDeCongelacion(carrera.getFecha())) {
+                imprimirMensaje("No se pueden eliminar resultados de carreras anteriores a la fecha de congelacion (2026-05-03).", "ERROR");
+                return;
+            }
+
             List<Resultado> resultados = resultadoService.obtenerResultadosCarrera((long) carreraId);
 
             if (resultados.isEmpty()) {
@@ -530,12 +531,13 @@ public class Main {
                 return;
             }
 
-            System.out.println("\nADVERTENCIA: Se eliminarán " + resultados.size() + " resultados.");
-            System.out.print("¿Está seguro? (S/N): ");
+            System.out.println("\nCarrera: " + carrera.getNombreGp() + " - " + carrera.getFecha());
+            System.out.println("ADVERTENCIA: Se eliminaran " + resultados.size() + " resultados.");
+            System.out.print("Esta seguro? (S/N): ");
             String confirmar = leerTexto().toUpperCase();
 
             if (!confirmar.equals("S")) {
-                System.out.println("Operación cancelada.");
+                System.out.println("Operacion cancelada.");
                 return;
             }
 
@@ -551,37 +553,61 @@ public class Main {
     }
 
     private static void ejecutarSimulacionCarreras() {
-        imprimirEncabezado("SIMULACIÓN AUTOMÁTICA DE CARRERAS - TEMPORADA 2025");
+        imprimirEncabezado("SIMULACION DE CARRERAS - TEMPORADA 2026");
 
-        System.out.println("Este proceso generará los resultados simulados de las dos");
-        System.out.println("carreras posteriores a la fecha de congelación:");
-        System.out.println(ConfiguracionTemporada.getMensajeCongelacion());
-        System.out.println(SEPARADOR_FINO);
-        System.out.print("¿Desea continuar? (S/N): ");
+        List<Carrera> carrerasPendientes = simulacionService.obtenerCarrerasPendientes();
 
-        String confirmar = leerTexto().trim().toUpperCase();
-        if (!confirmar.equals("S")) {
-            System.out.println("Operación cancelada.");
+        if (carrerasPendientes.isEmpty()) {
+            System.out.println("\n[INFO] No hay carreras pendientes para simular.");
+            System.out.println("Todas las carreras han sido completadas o no hay carreras posteriores a la fecha de congelacion.\n");
             return;
         }
 
-        try {
-            int simuladas = simulacionService.simularCarrerasPosteriores();
-            if (simuladas > 0) {
-                imprimirMensaje("Se simularon " + simuladas + " carreras exitosamente.", "EXITO");
-                System.out.println("Puede consultar los resultados desde la opción 4 del menú.");
-                System.out.println("Puede ver los detalles de las simulaciones con la opción 8 del menú.");
-            } else {
-                imprimirMensaje("No se generaron simulaciones (posiblemente no hay carreras posteriores).", "ADVERTENCIA");
+        System.out.println("\nCarreras pendientes de simular:");
+        System.out.println(SEPARADOR_FINO);
+        for (int i = 0; i < carrerasPendientes.size(); i++) {
+            Carrera c = carrerasPendientes.get(i);
+            System.out.printf("%d. %s (%s) - GP #%d%n",
+                    (i + 1),
+                    c.getNombreGp(),
+                    c.getFecha(),
+                    c.getGpNumero());
+        }
+        System.out.println(SEPARADOR_FINO);
+        System.out.println("0. Simular todas las carreras");
+        System.out.println(SEPARADOR_FINO);
+        System.out.print("Seleccione una opcion: ");
+
+        int opcion = leerOpcion();
+
+        if (opcion == 0) {
+            System.out.println("\n[INFO] Simulando todas las carreras pendientes...\n");
+            try {
+                int simuladas = simulacionService.simularCarrerasPosteriores();
+                if (simuladas > 0) {
+                    imprimirMensaje("Se simularon " + simuladas + " carreras exitosamente.", "EXITO");
+                    System.out.println("Consulte los resultados desde la opcion 4 del menu.");
+                    System.out.println("Vea los detalles con la opcion 8 del menu.");
+                }
+            } catch (Exception e) {
+                imprimirMensaje("Error durante la simulacion: " + e.getMessage(), "ERROR");
             }
-        } catch (Exception e) {
-            imprimirMensaje("Error durante la simulación: " + e.getMessage(), "ERROR");
+        } else if (opcion > 0 && opcion <= carrerasPendientes.size()) {
+            Carrera carreraSeleccionada = carrerasPendientes.get(opcion - 1);
+            System.out.println("\nSimulando: " + carreraSeleccionada.getNombreGp() + " (" + carreraSeleccionada.getFecha() + ")...\n");
+
+            try {
+                int resultados = simulacionService.simularCarreraSeleccionada(carreraSeleccionada);
+                imprimirMensaje("Carrera simulada exitosamente. " + resultados + " resultados generados.", "EXITO");
+                System.out.println("Consulte los resultados desde la opcion 4 del menu.");
+                System.out.println("Vea los detalles con la opcion 8 del menu.");
+            } catch (Exception e) {
+                imprimirMensaje("Error durante la simulacion: " + e.getMessage(), "ERROR");
+            }
+        } else {
+            System.out.println("Opcion invalida.");
         }
     }
-
-    // ============================================================================
-    // MÉTODOS AUXILIARES
-    // ============================================================================
 
     private static void imprimirEncabezado(String titulo) {
         System.out.println("\n" + SEPARADOR_GRUESO);
@@ -613,7 +639,7 @@ public class Main {
             if (input.isEmpty()) return -1;
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            imprimirMensaje("Entrada inválida. Ingrese un número.", "ADVERTENCIA");
+            imprimirMensaje("Entrada invalida. Ingrese un numero.", "ADVERTENCIA");
             return -1;
         }
     }
