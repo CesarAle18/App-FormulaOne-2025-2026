@@ -11,6 +11,7 @@ import co.com.service.ResultadoService.ResultadoDTO;
 import co.com.service.TemporadaService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -217,21 +218,36 @@ public class Main {
     }
 
     private static void mostrarResultadosCarrera(int anio) {
-        System.out.print("\nIngrese el ID de la carrera: ");
-        Long id = (long) leerOpcion();
+        List<Carrera> carrerasConResultados = servicio.getCarrerasConResultados(anio);
 
-        Optional<Carrera> carreraOpt = servicio.getCarreraById(id);
-        if (carreraOpt.isEmpty()) {
-            imprimirMensaje("No se encontro la carrera con ID: " + id, "ERROR");
+        if (carrerasConResultados.isEmpty()) {
+            imprimirMensaje("No hay carreras con resultados registrados en la temporada " + anio, "ADVERTENCIA");
             return;
         }
 
-        Carrera carrera = carreraOpt.get();
+        imprimirEncabezado("CARRERAS CON RESULTADOS DISPONIBLES");
+        System.out.printf("%-5s %-35s %-25s %-12s%n", "#", "Gran Premio", "Circuito", "Fecha");
+        System.out.println(SEPARADOR_FINO);
 
-        if (!carrera.getTemporada().getAnio().equals(anio)) {
-            imprimirMensaje("La carrera con ID " + id + " no pertenece a la temporada " + anio + ".", "ERROR");
+        for (int i = 0; i < carrerasConResultados.size(); i++) {
+            Carrera c = carrerasConResultados.get(i);
+            System.out.printf("%-5d %-35s %-25s %-12s%n",
+                    (i + 1),
+                    truncar(c.getNombreGp(), 35),
+                    c.getCircuito() != null ? truncar(c.getCircuito().getNombre(), 25) : "N/A",
+                    c.getFecha());
+        }
+
+        System.out.print("\nSeleccione el numero de la carrera: ");
+        int opcion = leerOpcion();
+
+        if (opcion < 1 || opcion > carrerasConResultados.size()) {
+            imprimirMensaje("Opcion invalida.", "ERROR");
             return;
         }
+
+        Carrera carrera = carrerasConResultados.get(opcion - 1);
+        Long id = carrera.getId();
 
         List<Resultado> resultados = servicio.getResultadosCarrera(id);
         if (resultados.isEmpty()) {
@@ -428,8 +444,13 @@ public class Main {
         System.out.println(SEPARADOR_FINO);
 
         List<ResultadoDTO> resultados = new ArrayList<>();
+        Map<Integer, List<String>> posicionesUsadas = new HashMap<>();
+        Piloto pilotoParaReprocesar = null;
 
-        for (Piloto piloto : pilotos) {
+        for (int i = 0; i < pilotos.size(); i++) {
+            Piloto piloto = pilotoParaReprocesar != null ? pilotoParaReprocesar : pilotos.get(i);
+            pilotoParaReprocesar = null;
+
             System.out.println("\n" + piloto.getNombre() + " (#" + piloto.getDorsal() + ")");
             System.out.print("   Posicion final (1-20, 0 o ENTER=no participo): ");
 
@@ -443,9 +464,88 @@ public class Main {
                 int posicion = Integer.parseInt(inputPosicion);
 
                 if (posicion < 1 || posicion > 20) {
-                    System.out.println("   Posicion invalida. Piloto omitido.");
+                    System.out.println("   Posicion invalida (debe ser 1-20). Piloto omitido.");
                     continue;
                 }
+
+                while (posicionesUsadas.containsKey(posicion)) {
+                    String pilotosConPosicion = String.join(", ", posicionesUsadas.get(posicion));
+                    System.out.println("   [CONFLICTO DETECTADO]");
+                    System.out.println("   La posicion " + posicion + " ya fue asignada a: " + pilotosConPosicion);
+                    System.out.println();
+                    System.out.println("   Que desea hacer?");
+                    System.out.println("   1. Mantener esta posicion (reemplazar al piloto anterior)");
+                    System.out.println("   2. Elegir otra posicion");
+                    System.out.println("   3. Omitir este piloto");
+                    System.out.println("   4. Cancelar toda la entrada");
+                    System.out.print("   Seleccione una opcion (1-4): ");
+
+                    String opcion = leerTexto();
+
+                    switch (opcion) {
+                        case "1":
+                            String nombrePilotoAnterior = posicionesUsadas.get(posicion).get(0);
+                            final int posRemover = posicion;
+                            resultados.removeIf(r -> r.getPilotoId().equals(
+                                    pilotos.stream()
+                                            .filter(p -> p.getNombre().equals(nombrePilotoAnterior))
+                                            .findFirst()
+                                            .map(Piloto::getId)
+                                            .orElse(-1L)
+                            ));
+                            posicionesUsadas.remove(posicion);
+                            System.out.println("   El piloto anterior (" + nombrePilotoAnterior + ") sera reemplazado.");
+                            pilotoParaReprocesar = pilotos.stream()
+                                    .filter(p -> p.getNombre().equals(nombrePilotoAnterior))
+                                    .findFirst()
+                                    .orElse(null);
+                            System.out.println("   El piloto anterior debera seleccionar otra posicion.");
+                            break;
+                        case "2":
+                            System.out.print("   Ingrese nueva posicion (1-20): ");
+                            String nuevaPos = leerTexto();
+                            if (nuevaPos.isEmpty() || nuevaPos.equals("0")) {
+                                System.out.println("   Piloto omitido.");
+                                posicion = -1;
+                                break;
+                            }
+                            try {
+                                posicion = Integer.parseInt(nuevaPos);
+                                if (posicion < 1 || posicion > 20) {
+                                    System.out.println("   Posicion invalida (debe ser 1-20). Piloto omitido.");
+                                    posicion = -1;
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("   Entrada invalida. Piloto omitido.");
+                                posicion = -1;
+                            }
+                            break;
+                        case "3":
+                            System.out.println("   Piloto omitido.");
+                            posicion = -1;
+                            break;
+                        case "4":
+                            System.out.println("   Operacion cancelada.");
+                            resultados.clear();
+                            posicionesUsadas.clear();
+                            return;
+                        default:
+                            System.out.println("   Opcion invalida. Piloto omitido.");
+                            posicion = -1;
+                            break;
+                    }
+
+                    if (posicion == -1) {
+                        break;
+                    }
+                }
+
+                if (posicion < 1) {
+                    continue;
+                }
+
+                posicionesUsadas.put(posicion, new ArrayList<>());
+                posicionesUsadas.get(posicion).add(piloto.getNombre());
 
                 ResultadoDTO dto = new ResultadoDTO(piloto.getId(), posicion);
 

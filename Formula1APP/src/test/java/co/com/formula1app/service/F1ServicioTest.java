@@ -195,4 +195,28 @@ public class  F1ServicioTest {
         assertNotNull(circuitos);
         assertTrue(circuitos.isEmpty());
     }
+
+    @Test
+    @Order(22)
+    void testGetCarrerasConResultados() {
+        List<Carrera> carreras = f1Servicio.getCarrerasConResultados(2024);
+        assertNotNull(carreras, "La lista de carreras con resultados no debe ser nula");
+        System.out.println("🔹 Carreras con resultados: " + carreras.size());
+    }
+
+    @Test
+    @Order(23)
+    void testGetCarrerasConResultadosTemporadaInexistente() {
+        List<Carrera> carreras = f1Servicio.getCarrerasConResultados(9999);
+        assertNotNull(carreras, "Debe devolver lista vacía si la temporada no existe");
+        assertTrue(carreras.isEmpty());
+    }
+
+    @Test
+    @Order(24)
+    void testGetCarrerasConResultadosAnioInvalido() {
+        List<Carrera> carreras = f1Servicio.getCarrerasConResultados(-5);
+        assertNotNull(carreras);
+        assertTrue(carreras.isEmpty());
+    }
 }

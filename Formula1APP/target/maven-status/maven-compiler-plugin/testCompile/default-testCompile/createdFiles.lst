@@ -23,7 +23,6 @@ co\com\formula1app\dao\CarreraDAOTest$3.class
 co\com\formula1app\service\TemporadaServiceTest$5.class
 co\com\formula1app\constantsTest\F1PointsSystemTest.class
 co\com\formula1app\dao\CircuitoDAOTest$3.class
-co\com\formula1app\config\ConfiguracionTemporadaTest.class
 co\com\formula1app\service\TemporadaServiceTest$6.class
 co\com\formula1app\dao\CarreraDAOTest.class
 co\com\formula1app\model\resultadoSprintModelTest.class

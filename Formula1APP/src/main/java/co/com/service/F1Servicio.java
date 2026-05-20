@@ -24,6 +24,19 @@ public class F1Servicio {
         }
     }
 
+    public List<Carrera> getCarrerasConResultados(int anio) {
+        if (anio <= 0) return List.of();
+        try {
+            List<Carrera> todasCarreras = getCarreras(anio);
+            return todasCarreras.stream()
+                    .filter(c -> resultadoDAO.countByCarrera(c.getId()) > 0)
+                    .toList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
     public List<Circuito> getCircuitos(int anio) {
         if (anio <= 0) return List.of();
         try {

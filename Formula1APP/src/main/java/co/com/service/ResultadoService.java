@@ -16,7 +16,9 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ResultadoService {
@@ -123,6 +125,36 @@ public class ResultadoService {
             }
 
             int resultadosIngresados = 0;
+
+            // Validar posiciones únicas (solo no-null)
+            Map<Integer, List<Long>> posicionesMap = new HashMap<>();
+            for (ResultadoDTO dto : resultados) {
+                if (dto.getPosicionFinal() != null) {
+                    posicionesMap.computeIfAbsent(dto.getPosicionFinal(), k -> new ArrayList<>())
+                        .add(dto.getPilotoId());
+                }
+            }
+
+            // Verificar duplicados y construir mensaje
+            List<String> duplicados = new ArrayList<>();
+            for (Map.Entry<Integer, List<Long>> entry : posicionesMap.entrySet()) {
+                if (entry.getValue().size() > 1) {
+                    List<String> nombresPilotos = new ArrayList<>();
+                    for (Long pid : entry.getValue()) {
+                        Optional<Piloto> p = pilotoDAO.findById(pid);
+                        if (p.isPresent()) {
+                            nombresPilotos.add(p.get().getNombre());
+                        }
+                    }
+                    duplicados.add("   - Posicion " + entry.getKey() + ": " + String.join(" y ", nombresPilotos));
+                }
+            }
+
+            if (!duplicados.isEmpty()) {
+                throw new IllegalArgumentException(
+                    "Posiciones duplicadas detectadas:\n" + String.join("\n", duplicados)
+                );
+            }
 
             // Ingresar nuevos resultados
             for (ResultadoDTO dto : resultados) {
