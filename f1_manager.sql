@@ -536,6 +536,376 @@ INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obteni
 (278, NULL, 8, 4.00, b'0', '+1 lap', 56, 28, 12),
 (279, NULL, 9, 2.00, b'0', '+1 lap', 56, 28, 18),
 (280, NULL, 10, 1.00, b'0', '+1 lap', 56, 28, 17);
+
+-- ============================================================
+-- INSERTS COMPLETOS: Posiciones 11-20 para todas las carreras
+-- Temporadas 2025 y 2026 | Puntos 0.00 para puestos 11-20
+-- ============================================================
+
+-- R01 2025: Carrera ID 1 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(281, NULL, 11, 0.00, b'0', '+1 lap', 57, 1, 10),
+(282, NULL, 12, 0.00, b'0', '+1 lap', 57, 1, 15),
+(283, NULL, 13, 0.00, b'0', '+1 lap', 57, 1, 11),
+(284, NULL, 14, 0.00, b'0', '+1 lap', 57, 1, 16),
+(285, NULL, 15, 0.00, b'0', '+2 laps', 56, 1, 14),
+(286, NULL, 16, 0.00, b'0', '+2 laps', 56, 1, 13),
+(287, NULL, 17, 0.00, b'0', '+2 laps', 56, 1, 6),
+(288, NULL, 18, 0.00, b'0', '+3 laps', 55, 1, 12),
+(289, NULL, 19, 0.00, b'0', '+3 laps', 55, 1, 19),
+(290, NULL, 20, 0.00, b'0', '+3 laps', 55, 1, 20);
+
+-- R02 2025: Carrera ID 2 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(291, NULL, 11, 0.00, b'0', '+1 lap', 55, 2, 11),
+(292, NULL, 12, 0.00, b'0', '+1 lap', 55, 2, 4),
+(293, NULL, 13, 0.00, b'0', '+1 lap', 55, 2, 15),
+(294, NULL, 14, 0.00, b'0', '+1 lap', 55, 2, 17),
+(295, NULL, 15, 0.00, b'0', '+2 laps', 54, 2, 18),
+(296, NULL, 16, 0.00, b'0', '+2 laps', 54, 2, 9),
+(297, NULL, 17, 0.00, b'0', '+2 laps', 54, 2, 10),
+(298, NULL, 18, 0.00, b'0', '+3 laps', 53, 2, 12),
+(299, NULL, 19, 0.00, b'0', '+3 laps', 53, 2, 13),
+(300, NULL, 20, 0.00, b'0', '+3 laps', 53, 2, 19);
+
+-- R03 2025: Carrera ID 3 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(301, NULL, 11, 0.00, b'0', '+1 lap', 52, 3, 16),
+(302, NULL, 12, 0.00, b'0', '+1 lap', 52, 3, 18),
+(303, NULL, 13, 0.00, b'0', '+1 lap', 52, 3, 9),
+(304, NULL, 14, 0.00, b'0', '+1 lap', 52, 3, 10),
+(305, NULL, 15, 0.00, b'0', '+2 laps', 51, 3, 11),
+(306, NULL, 16, 0.00, b'0', '+2 laps', 51, 3, 12),
+(307, NULL, 17, 0.00, b'0', '+2 laps', 51, 3, 13),
+(308, NULL, 18, 0.00, b'0', '+3 laps', 50, 3, 14),
+(309, NULL, 19, 0.00, b'0', '+3 laps', 50, 3, 19),
+(310, NULL, 20, 0.00, b'0', '+3 laps', 50, 3, 20);
+
+-- R04 2025: Carrera ID 4 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(311, NULL, 11, 0.00, b'0', '+1 lap', 56, 4, 18),
+(312, NULL, 12, 0.00, b'0', '+1 lap', 56, 4, 15),
+(313, NULL, 13, 0.00, b'0', '+1 lap', 56, 4, 16),
+(314, NULL, 14, 0.00, b'0', '+1 lap', 56, 4, 11),
+(315, NULL, 15, 0.00, b'0', '+2 laps', 55, 4, 12),
+(316, NULL, 16, 0.00, b'0', '+2 laps', 55, 4, 13),
+(317, NULL, 17, 0.00, b'0', '+2 laps', 55, 4, 14),
+(318, NULL, 18, 0.00, b'0', '+3 laps', 54, 4, 6),
+(319, NULL, 19, 0.00, b'0', '+3 laps', 54, 4, 19),
+(320, NULL, 20, 0.00, b'0', '+3 laps', 54, 4, 20);
+
+-- R05 2025: Carrera ID 5 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(321, NULL, 11, 0.00, b'0', '+1 lap', 49, 5, 17),
+(322, NULL, 12, 0.00, b'0', '+1 lap', 49, 5, 18),
+(323, NULL, 13, 0.00, b'0', '+1 lap', 49, 5, 10),
+(324, NULL, 14, 0.00, b'0', '+1 lap', 49, 5, 9),
+(325, NULL, 15, 0.00, b'0', '+2 laps', 48, 5, 11),
+(326, NULL, 16, 0.00, b'0', '+2 laps', 48, 5, 12),
+(327, NULL, 17, 0.00, b'0', '+2 laps', 48, 5, 13),
+(328, NULL, 18, 0.00, b'0', '+3 laps', 47, 5, 14),
+(329, NULL, 19, 0.00, b'0', '+3 laps', 47, 5, 19),
+(330, NULL, 20, 0.00, b'0', '+3 laps', 47, 5, 20);
+
+-- R06 2025: Carrera ID 6 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(331, NULL, 11, 0.00, b'0', '+1 lap', 56, 6, 16),
+(332, NULL, 12, 0.00, b'0', '+1 lap', 56, 6, 15),
+(333, NULL, 13, 0.00, b'0', '+1 lap', 56, 6, 10),
+(334, NULL, 14, 0.00, b'0', '+1 lap', 56, 6, 9),
+(335, NULL, 15, 0.00, b'0', '+2 laps', 55, 6, 11),
+(336, NULL, 16, 0.00, b'0', '+2 laps', 55, 6, 12),
+(337, NULL, 17, 0.00, b'0', '+2 laps', 55, 6, 13),
+(338, NULL, 18, 0.00, b'0', '+3 laps', 54, 6, 14),
+(339, NULL, 19, 0.00, b'0', '+3 laps', 54, 6, 19),
+(340, NULL, 20, 0.00, b'0', '+3 laps', 54, 6, 20);
+
+-- R07 2025: Carrera ID 7 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(341, NULL, 11, 0.00, b'0', '+1 lap', 62, 7, 16),
+(342, NULL, 12, 0.00, b'0', '+1 lap', 62, 7, 15),
+(343, NULL, 13, 0.00, b'0', '+1 lap', 62, 7, 18),
+(344, NULL, 14, 0.00, b'0', '+1 lap', 62, 7, 17),
+(345, NULL, 15, 0.00, b'0', '+2 laps', 61, 7, 10),
+(346, NULL, 16, 0.00, b'0', '+2 laps', 61, 7, 9),
+(347, NULL, 17, 0.00, b'0', '+2 laps', 61, 7, 6),
+(348, NULL, 18, 0.00, b'0', '+3 laps', 60, 7, 12),
+(349, NULL, 19, 0.00, b'0', '+3 laps', 60, 7, 13),
+(350, NULL, 20, 0.00, b'0', '+3 laps', 60, 7, 19);
+
+-- R08 2025: Carrera ID 8 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(351, NULL, 11, 0.00, b'0', '+1 lap', 77, 8, 16),
+(352, NULL, 12, 0.00, b'0', '+1 lap', 77, 8, 15),
+(353, NULL, 13, 0.00, b'0', '+1 lap', 77, 8, 11),
+(354, NULL, 14, 0.00, b'0', '+1 lap', 77, 8, 18),
+(355, NULL, 15, 0.00, b'0', '+2 laps', 76, 8, 12),
+(356, NULL, 16, 0.00, b'0', '+2 laps', 76, 8, 13),
+(357, NULL, 17, 0.00, b'0', '+2 laps', 76, 8, 14),
+(358, NULL, 18, 0.00, b'0', '+3 laps', 75, 8, 6),
+(359, NULL, 19, 0.00, b'0', '+3 laps', 75, 8, 19),
+(360, NULL, 20, 0.00, b'0', '+3 laps', 75, 8, 20);
+
+-- R09 2025: Carrera ID 9 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(361, NULL, 11, 0.00, b'0', '+1 lap', 65, 9, 18),
+(362, NULL, 12, 0.00, b'0', '+1 lap', 65, 9, 15),
+(363, NULL, 13, 0.00, b'0', '+1 lap', 65, 9, 10),
+(364, NULL, 14, 0.00, b'0', '+1 lap', 65, 9, 11),
+(365, NULL, 15, 0.00, b'0', '+2 laps', 64, 9, 12),
+(366, NULL, 16, 0.00, b'0', '+2 laps', 64, 9, 13),
+(367, NULL, 17, 0.00, b'0', '+2 laps', 64, 9, 14),
+(368, NULL, 18, 0.00, b'0', '+3 laps', 63, 9, 6),
+(369, NULL, 19, 0.00, b'0', '+3 laps', 63, 9, 19),
+(370, NULL, 20, 0.00, b'0', '+3 laps', 63, 9, 20);
+
+-- R10 2025: Carrera ID 10 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(371, NULL, 11, 0.00, b'0', '+1 lap', 69, 10, 16),
+(372, NULL, 12, 0.00, b'0', '+1 lap', 69, 10, 15),
+(373, NULL, 13, 0.00, b'0', '+1 lap', 69, 10, 18),
+(374, NULL, 14, 0.00, b'0', '+1 lap', 69, 10, 10),
+(375, NULL, 15, 0.00, b'0', '+2 laps', 68, 10, 9),
+(376, NULL, 16, 0.00, b'0', '+2 laps', 68, 10, 11),
+(377, NULL, 17, 0.00, b'0', '+2 laps', 68, 10, 12),
+(378, NULL, 18, 0.00, b'0', '+3 laps', 67, 10, 13),
+(379, NULL, 19, 0.00, b'0', '+3 laps', 67, 10, 6),
+(380, NULL, 20, 0.00, b'0', '+3 laps', 67, 10, 19);
+
+-- R11 2025: Carrera ID 11 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(381, NULL, 11, 0.00, b'0', '+1 lap', 70, 11, 18),
+(382, NULL, 12, 0.00, b'0', '+1 lap', 70, 11, 15),
+(383, NULL, 13, 0.00, b'0', '+1 lap', 70, 11, 10),
+(384, NULL, 14, 0.00, b'0', '+1 lap', 70, 11, 11),
+(385, NULL, 15, 0.00, b'0', '+2 laps', 69, 11, 12),
+(386, NULL, 16, 0.00, b'0', '+2 laps', 69, 11, 13),
+(387, NULL, 17, 0.00, b'0', '+2 laps', 69, 11, 14),
+(388, NULL, 18, 0.00, b'0', '+3 laps', 68, 11, 6),
+(389, NULL, 19, 0.00, b'0', '+3 laps', 68, 11, 19),
+(390, NULL, 20, 0.00, b'0', '+3 laps', 68, 11, 20);
+
+-- R12 2025: Carrera ID 12 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(391, NULL, 11, 0.00, b'0', '+1 lap', 51, 12, 16),
+(392, NULL, 12, 0.00, b'0', '+1 lap', 51, 12, 15),
+(393, NULL, 13, 0.00, b'0', '+1 lap', 51, 12, 10),
+(394, NULL, 14, 0.00, b'0', '+1 lap', 51, 12, 9),
+(395, NULL, 15, 0.00, b'0', '+2 laps', 50, 12, 11),
+(396, NULL, 16, 0.00, b'0', '+2 laps', 50, 12, 12),
+(397, NULL, 17, 0.00, b'0', '+2 laps', 50, 12, 13),
+(398, NULL, 18, 0.00, b'0', '+3 laps', 49, 12, 14),
+(399, NULL, 19, 0.00, b'0', '+3 laps', 49, 12, 6),
+(400, NULL, 20, 0.00, b'0', '+3 laps', 49, 12, 19);
+
+-- R13 2025: Carrera ID 13 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(401, NULL, 11, 0.00, b'0', '+1 lap', 43, 13, 16),
+(402, NULL, 12, 0.00, b'0', '+1 lap', 43, 13, 15),
+(403, NULL, 13, 0.00, b'0', '+1 lap', 43, 13, 18),
+(404, NULL, 14, 0.00, b'0', '+1 lap', 43, 13, 10),
+(405, NULL, 15, 0.00, b'0', '+2 laps', 42, 13, 9),
+(406, NULL, 16, 0.00, b'0', '+2 laps', 42, 13, 11),
+(407, NULL, 17, 0.00, b'0', '+2 laps', 42, 13, 12),
+(408, NULL, 18, 0.00, b'0', '+3 laps', 41, 13, 6),
+(409, NULL, 19, 0.00, b'0', '+3 laps', 41, 13, 19),
+(410, NULL, 20, 0.00, b'0', '+3 laps', 41, 13, 20);
+
+-- R14 2025: Carrera ID 14 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(411, NULL, 11, 0.00, b'0', '+1 lap', 69, 14, 16),
+(412, NULL, 12, 0.00, b'0', '+1 lap', 69, 14, 15),
+(413, NULL, 13, 0.00, b'0', '+1 lap', 69, 14, 18),
+(414, NULL, 14, 0.00, b'0', '+1 lap', 69, 14, 10),
+(415, NULL, 15, 0.00, b'0', '+2 laps', 68, 14, 11),
+(416, NULL, 16, 0.00, b'0', '+2 laps', 68, 14, 12),
+(417, NULL, 17, 0.00, b'0', '+2 laps', 68, 14, 14),
+(418, NULL, 18, 0.00, b'0', '+3 laps', 67, 14, 6),
+(419, NULL, 19, 0.00, b'0', '+3 laps', 67, 14, 19),
+(420, NULL, 20, 0.00, b'0', '+3 laps', 67, 14, 20);
+
+-- R15 2025: Carrera ID 15 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(421, NULL, 11, 0.00, b'0', '+1 lap', 71, 15, 16),
+(422, NULL, 12, 0.00, b'0', '+1 lap', 71, 15, 15),
+(423, NULL, 13, 0.00, b'0', '+1 lap', 71, 15, 10),
+(424, NULL, 14, 0.00, b'0', '+1 lap', 71, 15, 11),
+(425, NULL, 15, 0.00, b'0', '+2 laps', 70, 15, 12),
+(426, NULL, 16, 0.00, b'0', '+2 laps', 70, 15, 13),
+(427, NULL, 17, 0.00, b'0', '+2 laps', 70, 15, 14),
+(428, NULL, 18, 0.00, b'0', '+3 laps', 69, 15, 6),
+(429, NULL, 19, 0.00, b'0', '+3 laps', 69, 15, 19),
+(430, NULL, 20, 0.00, b'0', '+3 laps', 69, 15, 20);
+
+-- R16 2025: Carrera ID 16 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(431, NULL, 11, 0.00, b'0', '+1 lap', 52, 16, 15),
+(432, NULL, 12, 0.00, b'0', '+1 lap', 52, 16, 18),
+(433, NULL, 13, 0.00, b'0', '+1 lap', 52, 16, 10),
+(434, NULL, 14, 0.00, b'0', '+1 lap', 52, 16, 9),
+(435, NULL, 15, 0.00, b'0', '+2 laps', 51, 16, 11),
+(436, NULL, 16, 0.00, b'0', '+2 laps', 51, 16, 12),
+(437, NULL, 17, 0.00, b'0', '+2 laps', 51, 16, 13),
+(438, NULL, 18, 0.00, b'0', '+3 laps', 50, 16, 6),
+(439, NULL, 19, 0.00, b'0', '+3 laps', 50, 16, 19),
+(440, NULL, 20, 0.00, b'0', '+3 laps', 50, 16, 20);
+
+-- R17 2025: Carrera ID 17 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(441, NULL, 11, 0.00, b'0', '+1 lap', 50, 17, 15),
+(442, NULL, 12, 0.00, b'0', '+1 lap', 50, 17, 10),
+(443, NULL, 13, 0.00, b'0', '+1 lap', 50, 17, 9),
+(444, NULL, 14, 0.00, b'0', '+1 lap', 50, 17, 11),
+(445, NULL, 15, 0.00, b'0', '+2 laps', 49, 17, 12),
+(446, NULL, 16, 0.00, b'0', '+2 laps', 49, 17, 13),
+(447, NULL, 17, 0.00, b'0', '+2 laps', 49, 17, 14),
+(448, NULL, 18, 0.00, b'0', '+3 laps', 48, 17, 6),
+(449, NULL, 19, 0.00, b'0', '+3 laps', 48, 17, 19),
+(450, NULL, 20, 0.00, b'0', '+3 laps', 48, 17, 20);
+
+-- R18 2025: Carrera ID 18 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(451, NULL, 11, 0.00, b'0', '+1 lap', 61, 18, 16),
+(452, NULL, 12, 0.00, b'0', '+1 lap', 61, 18, 15),
+(453, NULL, 13, 0.00, b'0', '+1 lap', 61, 18, 10),
+(454, NULL, 14, 0.00, b'0', '+1 lap', 61, 18, 11),
+(455, NULL, 15, 0.00, b'0', '+2 laps', 60, 18, 12),
+(456, NULL, 16, 0.00, b'0', '+2 laps', 60, 18, 13),
+(457, NULL, 17, 0.00, b'0', '+2 laps', 60, 18, 14),
+(458, NULL, 18, 0.00, b'0', '+3 laps', 59, 18, 6),
+(459, NULL, 19, 0.00, b'0', '+3 laps', 59, 18, 19),
+(460, NULL, 20, 0.00, b'0', '+3 laps', 59, 18, 20);
+
+-- R19 2025: Carrera ID 19 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(461, NULL, 11, 0.00, b'0', '+1 lap', 55, 19, 15),
+(462, NULL, 12, 0.00, b'0', '+1 lap', 55, 19, 10),
+(463, NULL, 13, 0.00, b'0', '+1 lap', 55, 19, 9),
+(464, NULL, 14, 0.00, b'0', '+1 lap', 55, 19, 11),
+(465, NULL, 15, 0.00, b'0', '+2 laps', 54, 19, 12),
+(466, NULL, 16, 0.00, b'0', '+2 laps', 54, 19, 13),
+(467, NULL, 17, 0.00, b'0', '+2 laps', 54, 19, 14),
+(468, NULL, 18, 0.00, b'0', '+3 laps', 53, 19, 6),
+(469, NULL, 19, 0.00, b'0', '+3 laps', 53, 19, 19),
+(470, NULL, 20, 0.00, b'0', '+3 laps', 53, 19, 20);
+
+-- R20 2025: Carrera ID 20 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(471, NULL, 11, 0.00, b'0', '+1 lap', 70, 20, 16),
+(472, NULL, 12, 0.00, b'0', '+1 lap', 70, 20, 15),
+(473, NULL, 13, 0.00, b'0', '+1 lap', 70, 20, 10),
+(474, NULL, 14, 0.00, b'0', '+1 lap', 70, 20, 11),
+(475, NULL, 15, 0.00, b'0', '+2 laps', 69, 20, 12),
+(476, NULL, 16, 0.00, b'0', '+2 laps', 69, 20, 13),
+(477, NULL, 17, 0.00, b'0', '+2 laps', 69, 20, 14),
+(478, NULL, 18, 0.00, b'0', '+3 laps', 68, 20, 6),
+(479, NULL, 19, 0.00, b'0', '+3 laps', 68, 20, 19),
+(480, NULL, 20, 0.00, b'0', '+3 laps', 68, 20, 20);
+
+-- R21 2025: Carrera ID 21 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(481, NULL, 11, 0.00, b'0', '+1 lap', 68, 21, 18),
+(482, NULL, 12, 0.00, b'0', '+1 lap', 68, 21, 15),
+(483, NULL, 13, 0.00, b'0', '+1 lap', 68, 21, 10),
+(484, NULL, 14, 0.00, b'0', '+1 lap', 68, 21, 11),
+(485, NULL, 15, 0.00, b'0', '+2 laps', 67, 21, 12),
+(486, NULL, 16, 0.00, b'0', '+2 laps', 67, 21, 13),
+(487, NULL, 17, 0.00, b'0', '+2 laps', 67, 21, 14),
+(488, NULL, 18, 0.00, b'0', '+3 laps', 66, 21, 6),
+(489, NULL, 19, 0.00, b'0', '+3 laps', 66, 21, 19),
+(490, NULL, 20, 0.00, b'0', '+3 laps', 66, 21, 20);
+
+-- R22 2025: Carrera ID 22 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(491, NULL, 11, 0.00, b'0', '+1 lap', 49, 22, 16),
+(492, NULL, 12, 0.00, b'0', '+1 lap', 49, 22, 15),
+(493, NULL, 13, 0.00, b'0', '+1 lap', 49, 22, 1),
+(494, NULL, 14, 0.00, b'0', '+1 lap', 49, 22, 2),
+(495, NULL, 15, 0.00, b'0', '+2 laps', 48, 22, 10),
+(496, NULL, 16, 0.00, b'0', '+2 laps', 48, 22, 11),
+(497, NULL, 17, 0.00, b'0', '+2 laps', 48, 22, 12),
+(498, NULL, 18, 0.00, b'0', '+3 laps', 47, 22, 14),
+(499, NULL, 19, 0.00, b'0', '+3 laps', 47, 22, 6),
+(500, NULL, 20, 0.00, b'0', '+3 laps', 47, 22, 19);
+
+-- R23 2025: Carrera ID 23 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(501, NULL, 11, 0.00, b'0', '+1 lap', 56, 23, 16),
+(502, NULL, 12, 0.00, b'0', '+1 lap', 56, 23, 15),
+(503, NULL, 13, 0.00, b'0', '+1 lap', 56, 23, 10),
+(504, NULL, 14, 0.00, b'0', '+1 lap', 56, 23, 11),
+(505, NULL, 15, 0.00, b'0', '+2 laps', 55, 23, 12),
+(506, NULL, 16, 0.00, b'0', '+2 laps', 55, 23, 13),
+(507, NULL, 17, 0.00, b'0', '+2 laps', 55, 23, 14),
+(508, NULL, 18, 0.00, b'0', '+3 laps', 54, 23, 6),
+(509, NULL, 19, 0.00, b'0', '+3 laps', 54, 23, 19),
+(510, NULL, 20, 0.00, b'0', '+3 laps', 54, 23, 20);
+
+-- R24 2025: Carrera ID 24 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(511, NULL, 11, 0.00, b'0', '+1 lap', 57, 24, 16),
+(512, NULL, 12, 0.00, b'0', '+1 lap', 57, 24, 10),
+(513, NULL, 13, 0.00, b'0', '+1 lap', 57, 24, 9),
+(514, NULL, 14, 0.00, b'0', '+1 lap', 57, 24, 11),
+(515, NULL, 15, 0.00, b'0', '+2 laps', 56, 24, 12),
+(516, NULL, 16, 0.00, b'0', '+2 laps', 56, 24, 13),
+(517, NULL, 17, 0.00, b'0', '+2 laps', 56, 24, 14),
+(518, NULL, 18, 0.00, b'0', '+3 laps', 55, 24, 6),
+(519, NULL, 19, 0.00, b'0', '+3 laps', 55, 24, 19),
+(520, NULL, 20, 0.00, b'0', '+3 laps', 55, 24, 20);
+
+-- R01 2026: Carrera ID 25 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(521, NULL, 11, 0.00, b'0', '+1 lap', 57, 25, 2),
+(522, NULL, 12, 0.00, b'0', '+1 lap', 57, 25, 15),
+(523, NULL, 13, 0.00, b'0', '+1 lap', 57, 25, 16),
+(524, NULL, 14, 0.00, b'0', '+1 lap', 57, 25, 17),
+(525, NULL, 15, 0.00, b'0', '+2 laps', 56, 25, 18),
+(526, NULL, 16, 0.00, b'0', '+2 laps', 56, 25, 9),
+(527, NULL, 17, 0.00, b'0', '+2 laps', 56, 25, 10),
+(528, NULL, 18, 0.00, b'0', '+3 laps', 55, 25, 6),
+(529, NULL, 19, 0.00, b'0', '+3 laps', 55, 25, 12),
+(530, NULL, 20, 0.00, b'0', '+3 laps', 55, 25, 13);
+
+-- R02 2026: Carrera ID 26 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(531, NULL, 11, 0.00, b'0', '+1 lap', 55, 26, 1),
+(532, NULL, 12, 0.00, b'0', '+1 lap', 55, 26, 2),
+(533, NULL, 13, 0.00, b'0', '+1 lap', 55, 26, 5),
+(534, NULL, 14, 0.00, b'0', '+1 lap', 55, 26, 17),
+(535, NULL, 15, 0.00, b'0', '+2 laps', 54, 26, 9),
+(536, NULL, 16, 0.00, b'0', '+2 laps', 54, 26, 10),
+(537, NULL, 17, 0.00, b'0', '+2 laps', 54, 26, 12),
+(538, NULL, 18, 0.00, b'0', '+3 laps', 53, 26, 13),
+(539, NULL, 19, 0.00, b'0', '+3 laps', 53, 26, 19),
+(540, NULL, 20, 0.00, b'0', '+3 laps', 53, 26, 20);
+
+-- R03 2026: Carrera ID 27 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(541, NULL, 11, 0.00, b'0', '+1 lap', 52, 27, 14),
+(542, NULL, 12, 0.00, b'0', '+1 lap', 52, 27, 15),
+(543, NULL, 13, 0.00, b'0', '+1 lap', 52, 27, 16),
+(544, NULL, 14, 0.00, b'0', '+1 lap', 52, 27, 17),
+(545, NULL, 15, 0.00, b'0', '+2 laps', 51, 27, 18),
+(546, NULL, 16, 0.00, b'0', '+2 laps', 51, 27, 9),
+(547, NULL, 17, 0.00, b'0', '+2 laps', 51, 27, 10),
+(548, NULL, 18, 0.00, b'0', '+3 laps', 50, 27, 12),
+(549, NULL, 19, 0.00, b'0', '+3 laps', 50, 27, 19),
+(550, NULL, 20, 0.00, b'0', '+3 laps', 50, 27, 20);
+
+-- R04 2026: Carrera ID 28 - Posiciones 11 al 20
+INSERT INTO `resultado` (`id`, `motivo_retiro`, `posicion_final`, `puntos_obtenidos`, `retirado`, `tiempo`, `vueltas`, `carrera_id`, `piloto_id`) VALUES
+(551, NULL, 11, 0.00, b'0', '+1 lap', 56, 28, 15),
+(552, NULL, 12, 0.00, b'0', '+1 lap', 56, 28, 16),
+(553, NULL, 13, 0.00, b'0', '+1 lap', 56, 28, 9),
+(554, NULL, 14, 0.00, b'0', '+1 lap', 56, 28, 10),
+(555, NULL, 15, 0.00, b'0', '+2 laps', 55, 28, 11),
+(556, NULL, 16, 0.00, b'0', '+2 laps', 55, 28, 13),
+(557, NULL, 17, 0.00, b'0', '+2 laps', 55, 28, 14),
+(558, NULL, 18, 0.00, b'0', '+3 laps', 54, 28, 6),
+(559, NULL, 19, 0.00, b'0', '+3 laps', 54, 28, 19),
+(560, NULL, 20, 0.00, b'0', '+3 laps', 54, 28, 20);
+
 -- ============================================================
 -- TABLA: resultado_sprint
 -- ============================================================
