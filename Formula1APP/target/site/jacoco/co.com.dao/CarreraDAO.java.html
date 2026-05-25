@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CarreraDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Formula1APP</a> &gt; <a href="index.source.html" class="el_package">co.com.dao</a> &gt; <span class="el_source">CarreraDAO.java</span></div><h1>CarreraDAO.java</h1><pre class="source lang-java linenums">package co.com.dao;
 
 import co.com.model.Carrera;
-import co.com.util.JPAUtil;
+import co.com.util.DatabaseManager;  // Mejora: Importar la nueva clase de gestión de conexiones
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
@@ -17,6 +17,7 @@ import java.util.Optional;
  */
 <span class="fc" id="L18">public class CarreraDAO {</span>
 <span class="fc" id="L19">    private static final Logger logger = LoggerFactory.getLogger(CarreraDAO.class);</span>
+<span class="fc" id="L20">    private final DatabaseManager dbManager = new DatabaseManager();  // Mejora: Inyectar DatabaseManager para DIP y SRP</span>
 
     /**
      * Obtiene todas las carreras ordenadas por fecha.
@@ -24,31 +25,30 @@ import java.util.Optional;
      * @return Lista de todas las carreras
      */
     public List&lt;Carrera&gt; findAll() {
-<span class="fc" id="L27">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L28">        EntityManager em = dbManager.getEntityManager();  // Mejora: Usar dbManager en lugar de JPAUtil directamente</span>
         try {
-<span class="fc" id="L29">            TypedQuery&lt;Carrera&gt; query = em.createQuery(</span>
+<span class="fc" id="L30">            TypedQuery&lt;Carrera&gt; query = em.createQuery(</span>
                     &quot;SELECT c FROM Carrera c ORDER BY c.fecha&quot;,
                     Carrera.class
             );
-<span class="fc" id="L33">            List&lt;Carrera&gt; carreras = query.getResultList();</span>
-<span class="fc" id="L34">            logger.info(&quot;Se obtuvieron {} carreras&quot;, carreras.size());</span>
-<span class="fc" id="L35">            return carreras;</span>
-<span class="nc" id="L36">        } catch (Exception e) {</span>
-<span class="nc" id="L37">            logger.error(&quot;Error al listar carreras&quot;, e);</span>
-<span class="nc" id="L38">            throw new RuntimeException(&quot;Error al obtener carreras&quot;, e);</span>
+<span class="fc" id="L34">            List&lt;Carrera&gt; carreras = query.getResultList();</span>
+<span class="fc" id="L35">            logger.info(&quot;Se obtuvieron {} carreras&quot;, carreras.size());</span>
+<span class="fc" id="L36">            return carreras;</span>
+<span class="nc" id="L37">        } catch (Exception e) {</span>
+<span class="nc" id="L38">            logger.error(&quot;Error al listar carreras&quot;, e);</span>
+<span class="nc" id="L39">            throw new RuntimeException(&quot;Error al obtener carreras&quot;, e);</span>
         } finally {
-<span class="fc" id="L40">            JPAUtil.close(em);</span>
+<span class="fc" id="L41">            dbManager.closeEntityManager(em);  // Mejora: Usar dbManager para cerrar</span>
         }
     }
 
     /**
      * Obtiene las carreras de una temporada específica ordenadas por número de GP.
      *
-     * @param anio Año de la temporada
      * @return Lista de carreras de esa temporada
      */
-    public List&lt;Carrera&gt; findByTemporada(Integer anio) {
-<span class="fc" id="L51">        EntityManager em = JPAUtil.getEntityManager();</span>
+    public List&lt;Carrera&gt; findByTemporada(Integer anio) {  // Renombrado lógicamente, pero puedes mantener el nombre si quieres
+<span class="fc" id="L51">        EntityManager em = dbManager.getEntityManager();  // Mejora: Usar dbManager</span>
         try {
 <span class="fc" id="L53">            TypedQuery&lt;Carrera&gt; query = em.createQuery(</span>
                     &quot;SELECT c FROM Carrera c JOIN FETCH c.circuito JOIN c.temporada t WHERE t.anio = :anio ORDER BY c.gpNumero&quot;,
@@ -62,7 +62,7 @@ import java.util.Optional;
 <span class="nc" id="L62">            logger.error(&quot;Error al listar carreras por temporada: &quot; + anio, e);</span>
 <span class="nc" id="L63">            throw new RuntimeException(&quot;Error al obtener carreras de la temporada&quot;, e);</span>
         } finally {
-<span class="fc" id="L65">            JPAUtil.close(em);</span>
+<span class="fc" id="L65">            dbManager.closeEntityManager(em);</span>
         }
     }
 
@@ -73,7 +73,7 @@ import java.util.Optional;
      * @return Optional con la carrera si existe
      */
     public Optional&lt;Carrera&gt; findById(Long id) {
-<span class="fc" id="L76">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L76">        EntityManager em = dbManager.getEntityManager();</span>
         try {
 <span class="fc" id="L78">            TypedQuery&lt;Carrera&gt; query = em.createQuery(</span>
                     &quot;SELECT c FROM Carrera c JOIN FETCH c.temporada JOIN FETCH c.circuito WHERE c.id = :id&quot;,
@@ -90,7 +90,7 @@ import java.util.Optional;
 <span class="nc" id="L90">            logger.error(&quot;Error al buscar carrera por ID: &quot; + id, e);</span>
 <span class="nc" id="L91">            return Optional.empty();</span>
         } finally {
-<span class="fc" id="L93">            JPAUtil.close(em);</span>
+<span class="fc" id="L93">            dbManager.closeEntityManager(em);</span>
         }
     }
 
@@ -101,7 +101,7 @@ import java.util.Optional;
      * @return Lista de carreras que coinciden
      */
     public List&lt;Carrera&gt; findByNombreGp(String nombre) {
-<span class="fc" id="L104">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L104">        EntityManager em = dbManager.getEntityManager();</span>
         try {
             // Validar entrada nula o vacía
 <span class="fc bfc" id="L107" title="All 4 branches covered.">            if (nombre == null || nombre.trim().isEmpty()) {</span>
@@ -119,7 +119,7 @@ import java.util.Optional;
 <span class="nc" id="L119">            logger.error(&quot;Error al buscar carreras por nombre: &quot; + nombre, e);</span>
 <span class="nc" id="L120">            throw new RuntimeException(&quot;Error al buscar carreras por nombre&quot;, e);</span>
         } finally {
-<span class="fc" id="L122">            JPAUtil.close(em);</span>
+<span class="fc" id="L122">            dbManager.closeEntityManager(em);</span>
         }
     }
 
@@ -130,7 +130,7 @@ import java.util.Optional;
      * @return Carrera guardada con ID asignado
      */
     public Carrera save(Carrera carrera) {
-<span class="fc" id="L133">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L133">        EntityManager em = dbManager.getEntityManager();</span>
         try {
             // Validación de campos obligatorios
 <span class="pc bpc" id="L136" title="1 of 2 branches missed.">            if (carrera == null) {</span>
@@ -162,7 +162,7 @@ import java.util.Optional;
 <span class="fc" id="L162">            logger.error(&quot;Error al guardar carrera: &quot; + carrera.getNombreGp(), e);</span>
 <span class="fc" id="L163">            throw new RuntimeException(&quot;Error al guardar carrera&quot;, e);</span>
         } finally {
-<span class="fc" id="L165">            JPAUtil.close(em);</span>
+<span class="fc" id="L165">            dbManager.closeEntityManager(em);</span>
         }
     }
 
@@ -173,7 +173,7 @@ import java.util.Optional;
      * @return Carrera actualizada
      */
     public Carrera update(Carrera carrera) {
-<span class="fc" id="L176">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L176">        EntityManager em = dbManager.getEntityManager();</span>
         try {
 <span class="fc" id="L178">            em.getTransaction().begin();</span>
 <span class="fc" id="L179">            Carrera updated = em.merge(carrera);</span>
@@ -188,7 +188,7 @@ import java.util.Optional;
 <span class="nc" id="L188">            logger.error(&quot;Error al actualizar carrera: &quot; + carrera.getNombreGp(), e);</span>
 <span class="nc" id="L189">            throw new RuntimeException(&quot;Error al actualizar carrera&quot;, e);</span>
         } finally {
-<span class="fc" id="L191">            JPAUtil.close(em);</span>
+<span class="fc" id="L191">            dbManager.closeEntityManager(em);</span>
         }
     }
 
@@ -199,7 +199,7 @@ import java.util.Optional;
      * @return true si se eliminó, false si no existía
      */
     public boolean delete(Long id) {
-<span class="fc" id="L202">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L202">        EntityManager em = dbManager.getEntityManager();</span>
         try {
 <span class="fc" id="L204">            em.getTransaction().begin();</span>
 <span class="fc" id="L205">            Carrera carrera = em.find(Carrera.class, id);</span>
@@ -220,7 +220,7 @@ import java.util.Optional;
 <span class="nc" id="L220">            logger.error(&quot;Error al eliminar carrera con ID: &quot; + id, e);</span>
 <span class="nc" id="L221">            throw new RuntimeException(&quot;Error al eliminar carrera&quot;, e);</span>
         } finally {
-<span class="fc" id="L223">            JPAUtil.close(em);</span>
+<span class="fc" id="L223">            dbManager.closeEntityManager(em);</span>
         }
     }
 
@@ -230,7 +230,7 @@ import java.util.Optional;
      * @return Número total de carreras
      */
     public long count() {
-<span class="fc" id="L233">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L233">        EntityManager em = dbManager.getEntityManager();</span>
         try {
 <span class="fc" id="L235">            TypedQuery&lt;Long&gt; query = em.createQuery(</span>
                     &quot;SELECT COUNT(c) FROM Carrera c&quot;,
@@ -241,7 +241,7 @@ import java.util.Optional;
 <span class="nc" id="L241">            logger.error(&quot;Error al contar carreras&quot;, e);</span>
 <span class="nc" id="L242">            return 0;</span>
         } finally {
-<span class="fc" id="L244">            JPAUtil.close(em);</span>
+<span class="fc" id="L244">            dbManager.closeEntityManager(em);</span>
         }
     }
 }

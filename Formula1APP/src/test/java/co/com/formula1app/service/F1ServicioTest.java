@@ -32,9 +32,9 @@ public class  F1ServicioTest {
     @Test
         @Order(1)
         void testGetCarreras() {
-            List<Carrera> carreras = f1Servicio.getCarreras(2024);
+            List<Carrera> carreras = f1Servicio.getCarreras(2025);
             assertNotNull(carreras, "La lista de carreras no debe ser nula");
-            assertTrue(carreras.size() > 0, "Debe haber al menos una carrera en 2024");
+            assertTrue(carreras.size() > 0, "Debe haber al menos una carrera en 2025");
         }
 
         @Test
@@ -48,7 +48,7 @@ public class  F1ServicioTest {
         @Test
         @Order(3)
         void testGetResultadosCarrera() {
-            List<Carrera> carreras = carreraDAO.findByTemporada(2024);
+            List<Carrera> carreras = carreraDAO.findByTemporada(2025);
             assertFalse(carreras.isEmpty(), "Debe haber carreras registradas");
             Long carreraId = carreras.get(0).getId();
 
@@ -59,7 +59,7 @@ public class  F1ServicioTest {
         @Test
         @Order(4)
         void testGetClasificacionPilotos() {
-            List<Map<String, Object>> clasificacion = f1Servicio.getClasificacionPilotos(2024);
+            List<Map<String, Object>> clasificacion = f1Servicio.getClasificacionPilotos(2025);
             assertNotNull(clasificacion, "La clasificación de pilotos no debe ser nula");
             System.out.println("🔹 Pilotos clasificados: " + clasificacion.size());
         }
@@ -67,7 +67,7 @@ public class  F1ServicioTest {
         @Test
         @Order(5)
         void testGetClasificacionConstructores() {
-            List<Map<String, Object>> clasificacion = f1Servicio.getClasificacionConstructores(2024);
+            List<Map<String, Object>> clasificacion = f1Servicio.getClasificacionConstructores(2025);
             assertNotNull(clasificacion, "La clasificación de constructores no debe ser nula");
             System.out.println("🔹 Constructores clasificados: " + clasificacion.size());
         }
@@ -82,7 +82,7 @@ public class  F1ServicioTest {
     @Test
     @Order(7)
     void testGetCarreraById() {
-        var carreras = f1Servicio.getCarreras(2024);
+        var carreras = f1Servicio.getCarreras(2025);
         assertFalse(carreras.isEmpty());
         var id = carreras.get(0).getId();
         var carreraOpt = f1Servicio.getCarreraById(id);
@@ -91,7 +91,7 @@ public class  F1ServicioTest {
     @Test
     @Order(8)
     void testGetCircuitos() {
-        var circuitos = f1Servicio.getCircuitos(2024);
+        var circuitos = f1Servicio.getCircuitos(2025);
         assertNotNull(circuitos, "La lista de circuitos no debe ser nula");
         assertTrue(circuitos.size() >= 0, "Debe devolver una lista (aunque esté vacía)");
     }
@@ -199,7 +199,7 @@ public class  F1ServicioTest {
     @Test
     @Order(22)
     void testGetCarrerasConResultados() {
-        List<Carrera> carreras = f1Servicio.getCarrerasConResultados(2024);
+        List<Carrera> carreras = f1Servicio.getCarrerasConResultados(2025);
         assertNotNull(carreras, "La lista de carreras con resultados no debe ser nula");
         System.out.println("🔹 Carreras con resultados: " + carreras.size());
     }

@@ -38,9 +38,34 @@ public class F1PointsSystemTest {
             assertEquals(puntosSinFastLap.add(BigDecimal.ONE), puntosConFastLap);
         }
 
-        @Test
-        void testFastestLapNoPointsIfOutsideTop10() {
-            // Vuelta rápida fuera del top 10 no debe sumar punto
-            assertEquals(BigDecimal.ZERO, F1PointsSystem.calculatePoints(11, true));
-        }
+    @Test
+    void testFastestLapNoPointsIfOutsideTop10() {
+        assertEquals(BigDecimal.ZERO, F1PointsSystem.calculatePoints(11, true));
+    }
+
+    @Test
+    void testGetPointsForPosition() {
+        assertEquals(new BigDecimal("25"), F1PointsSystem.getPointsForPosition(1));
+        assertEquals(new BigDecimal("18"), F1PointsSystem.getPointsForPosition(2));
+        assertEquals(new BigDecimal("15"), F1PointsSystem.getPointsForPosition(3));
+        assertEquals(new BigDecimal("12"), F1PointsSystem.getPointsForPosition(4));
+        assertEquals(new BigDecimal("10"), F1PointsSystem.getPointsForPosition(5));
+        assertEquals(new BigDecimal("8"), F1PointsSystem.getPointsForPosition(6));
+        assertEquals(new BigDecimal("6"), F1PointsSystem.getPointsForPosition(7));
+        assertEquals(new BigDecimal("4"), F1PointsSystem.getPointsForPosition(8));
+        assertEquals(new BigDecimal("2"), F1PointsSystem.getPointsForPosition(9));
+        assertEquals(new BigDecimal("1"), F1PointsSystem.getPointsForPosition(10));
+        assertEquals(BigDecimal.ZERO, F1PointsSystem.getPointsForPosition(11));
+        assertEquals(BigDecimal.ZERO, F1PointsSystem.getPointsForPosition(0));
+        assertEquals(BigDecimal.ZERO, F1PointsSystem.getPointsForPosition(-1));
+    }
+
+    @Test
+    void testIsPointScoringPosition() {
+        assertTrue(F1PointsSystem.isPointScoringPosition(1));
+        assertTrue(F1PointsSystem.isPointScoringPosition(10));
+        assertFalse(F1PointsSystem.isPointScoringPosition(11));
+        assertFalse(F1PointsSystem.isPointScoringPosition(0));
+        assertFalse(F1PointsSystem.isPointScoringPosition(-1));
+    }
 }

@@ -35,7 +35,7 @@ public class TemporadaServiceTest {
     @Test
     @Order(2)
     void testCopiarEstructuraTemporada() {
-        int copiadas = temporadaService.copiarEstructuraTemporada(2024, 2026);
+        int copiadas = temporadaService.copiarEstructuraTemporada(2025, 2026);
         assertTrue(copiadas >= 0, "Debe devolver número válido de carreras copiadas");
     }
     @Test

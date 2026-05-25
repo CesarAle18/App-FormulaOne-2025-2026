@@ -10,9 +10,9 @@ public class ConfiguracionTemporadaTest {
 
         @Test
         void testEsDespuesDeCongelacion() {
-            LocalDate antes = LocalDate.of(2024, 12, 31);
+            LocalDate antes = LocalDate.of(2026, 5, 2);
             LocalDate igual = ConfiguracionTemporada.FECHA_CONGELACION;
-            LocalDate despues = LocalDate.of(2025, 1, 8);
+            LocalDate despues = LocalDate.of(2026, 6, 1);
 
             assertFalse(ConfiguracionTemporada.esDespuesDeCongelacion(antes));
             assertFalse(ConfiguracionTemporada.esDespuesDeCongelacion(igual));
@@ -21,12 +21,12 @@ public class ConfiguracionTemporadaTest {
 
         @Test
         void testPermiteIngresoManual() {
-            LocalDate antes = LocalDate.of(2024, 12, 31);
+            LocalDate antes = LocalDate.of(2026, 5, 2);
             LocalDate igual = ConfiguracionTemporada.FECHA_CONGELACION;
-            LocalDate despues = LocalDate.of(2025, 2, 1);
+            LocalDate despues = LocalDate.of(2026, 6, 1);
 
             assertFalse(ConfiguracionTemporada.permiteIngresoManual(antes));
-            assertTrue(ConfiguracionTemporada.permiteIngresoManual(igual));
+            assertFalse(ConfiguracionTemporada.permiteIngresoManual(igual));
             assertTrue(ConfiguracionTemporada.permiteIngresoManual(despues));
         }
 
@@ -35,14 +35,34 @@ public class ConfiguracionTemporadaTest {
             String mensaje = ConfiguracionTemporada.getMensajeCongelacion();
 
             assertNotNull(mensaje);
-            assertTrue(mensaje.contains("Fecha de congelación del proyecto"));
-            assertTrue(mensaje.contains("2025"));
+            assertTrue(mensaje.contains("Fecha de congelacion del proyecto"));
+            assertTrue(mensaje.contains("2026"));
         }
 
         @Test
         void testConstantesTemporada() {
-            assertEquals(2024, ConfiguracionTemporada.TEMPORADA_2024);
             assertEquals(2025, ConfiguracionTemporada.TEMPORADA_2025);
-            assertEquals(ConfiguracionTemporada.TEMPORADA_2025, ConfiguracionTemporada.TEMPORADA_ACTUAL);
+            assertEquals(2026, ConfiguracionTemporada.TEMPORADA_2026);
+            assertEquals(ConfiguracionTemporada.TEMPORADA_2026, ConfiguracionTemporada.TEMPORADA_ACTUAL);
+        }
+
+        @Test
+        void testPermiteModificarResultado() {
+            LocalDate antes = LocalDate.of(2026, 5, 2);
+            LocalDate despues = LocalDate.of(2026, 6, 1);
+
+            assertFalse(ConfiguracionTemporada.permiteModificarResultado(antes));
+            assertTrue(ConfiguracionTemporada.permiteModificarResultado(despues));
+        }
+
+        @Test
+        void testEsCarreraFutura() {
+            LocalDate antes = LocalDate.of(2026, 5, 2);
+            LocalDate igual = ConfiguracionTemporada.FECHA_CONGELACION;
+            LocalDate despues = LocalDate.of(2026, 6, 1);
+
+            assertFalse(ConfiguracionTemporada.esCarreraFutura(antes));
+            assertFalse(ConfiguracionTemporada.esCarreraFutura(igual));
+            assertTrue(ConfiguracionTemporada.esCarreraFutura(despues));
         }
     }

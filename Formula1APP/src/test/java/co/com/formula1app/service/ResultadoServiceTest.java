@@ -38,8 +38,8 @@ public class ResultadoServiceTest {
 
         assertTrue(JPAUtil.isAvailable(), "La conexión a la base de datos debe estar activa");
 
-        List<Carrera> carreras = carreraDAO.findByTemporada(2024);
-        assertFalse(carreras.isEmpty(), "Debe haber carreras disponibles en la temporada 2024");
+        List<Carrera> carreras = carreraDAO.findByTemporada(2025);
+        assertFalse(carreras.isEmpty(), "Debe haber carreras disponibles en la temporada 2025");
         carreraIdTest = carreras.get(0).getId();
 
         List<Piloto> pilotos = pilotoDAO.findAll();
@@ -88,7 +88,7 @@ public class ResultadoServiceTest {
         boolean permite = resultadoService.permiteIngresoManual(carreraIdTest);
         assertTrue(permite || !permite);
 
-        var editables = resultadoService.obtenerCarrerasEditables(2024);
+        var editables = resultadoService.obtenerCarrerasEditables(2025);
         assertNotNull(editables);
     }
 

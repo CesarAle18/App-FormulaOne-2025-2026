@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProbabilidadStrategy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Formula1APP</a> &gt; <a href="index.source.html" class="el_package">co.com.simulacion.strategy</a> &gt; <span class="el_source">ProbabilidadStrategy.java</span></div><h1>ProbabilidadStrategy.java</h1><pre class="source lang-java linenums">package co.com.simulacion.strategy;
+
+import co.com.model.Piloto;
+
+import java.math.BigDecimal;
+import java.util.*;
+
+/**
+ * Estrategia que realiza muestreo sin reemplazo ponderado por puntos.
+ * Recibe un mapa con los puntos actuales por piloto para construir los pesos.
+ */
+public class ProbabilidadStrategy implements SimulacionStrategy {
+
+    private final Map&lt;Long, BigDecimal&gt; puntosPorPiloto;
+    private final Random rng;
+    private final double floorPeso; // peso mínimo para pilotos con 0 puntos (ej: 1.0)
+
+    /**
+     * @param puntosPorPiloto mapa idPiloto -&gt; puntos (puede ser vacío)
+     * @param seed semilla aleatoria (usa System.nanoTime() si es null)
+     * @param floorPeso peso mínimo para pilotos sin puntos (&gt;= 0.1)
+     */
+<span class="fc" id="L23">    public ProbabilidadStrategy(Map&lt;Long, BigDecimal&gt; puntosPorPiloto, Long seed, double floorPeso) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        this.puntosPorPiloto = puntosPorPiloto != null ? puntosPorPiloto : Collections.emptyMap();</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        this.rng = (seed == null) ? new Random() : new Random(seed);</span>
+<span class="fc" id="L26">        this.floorPeso = Math.max(0.1, floorPeso);</span>
+<span class="fc" id="L27">    }</span>
+
+    public ProbabilidadStrategy(Map&lt;Long, BigDecimal&gt; puntosPorPiloto) {
+<span class="fc" id="L30">        this(puntosPorPiloto, null, 1.0);</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public List&lt;Piloto&gt; simularResultados(List&lt;Piloto&gt; pilotos) {
+<span class="fc bfc" id="L35" title="All 4 branches covered.">        if (pilotos == null || pilotos.isEmpty()) return Collections.emptyList();</span>
+
+        // Trabajamos con una copia mutable
+<span class="fc" id="L38">        List&lt;Piloto&gt; candidatos = new ArrayList&lt;&gt;(pilotos);</span>
+
+        // Construir mapa de pesos double
+<span class="fc" id="L41">        Map&lt;Long, Double&gt; pesos = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L42">        double sumaTotal = 0.0;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (Piloto p : candidatos) {</span>
+<span class="fc" id="L44">            BigDecimal pts = puntosPorPiloto.getOrDefault(p.getId(), BigDecimal.ZERO);</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">            double w = pts == null ? 0.0 : pts.doubleValue();</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (w &lt;= 0.0) w = floorPeso; // floor para no excluir pilotos</span>
+<span class="fc" id="L47">            pesos.put(p.getId(), w);</span>
+<span class="fc" id="L48">            sumaTotal += w;</span>
+<span class="fc" id="L49">        }</span>
+
+        // Si por alguna razón sumaTotal = 0, fallback a shuffle simple
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (sumaTotal &lt;= 0.0) {</span>
+<span class="nc" id="L53">            Collections.shuffle(candidatos, rng);</span>
+<span class="nc" id="L54">            return candidatos;</span>
+        }
+
+<span class="fc" id="L57">        List&lt;Piloto&gt; orden = new ArrayList&lt;&gt;(candidatos.size());</span>
+
+        // Muestreo sin reemplazo ponderado
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        while (!candidatos.isEmpty()) {</span>
+<span class="fc" id="L61">            double r = rng.nextDouble() * sumaTotal;</span>
+<span class="fc" id="L62">            double acumulado = 0.0;</span>
+<span class="fc" id="L63">            Piloto seleccionado = null;</span>
+
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            for (Piloto p : candidatos) {</span>
+<span class="fc" id="L66">                acumulado += pesos.getOrDefault(p.getId(), 0.0);</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">                if (r &lt;= acumulado) {</span>
+<span class="fc" id="L68">                    seleccionado = p;</span>
+<span class="fc" id="L69">                    break;</span>
+                }
+<span class="fc" id="L71">            }</span>
+
+            // fallback de seguridad
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">            if (seleccionado == null) {</span>
+<span class="nc" id="L75">                seleccionado = candidatos.get(rng.nextInt(candidatos.size()));</span>
+            }
+
+<span class="fc" id="L78">            orden.add(seleccionado);</span>
+
+            // actualizar suma y remover seleccionado
+<span class="fc" id="L81">            double wSel = pesos.getOrDefault(seleccionado.getId(), 0.0);</span>
+<span class="fc" id="L82">            sumaTotal -= wSel;</span>
+<span class="fc" id="L83">            pesos.remove(seleccionado.getId());</span>
+<span class="fc" id="L84">            candidatos.remove(seleccionado);</span>
+
+            // protección contra redondeos negativos
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">            if (sumaTotal &lt; 0) sumaTotal = 0;</span>
+<span class="fc" id="L88">        }</span>
+
+<span class="fc" id="L90">        return orden;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

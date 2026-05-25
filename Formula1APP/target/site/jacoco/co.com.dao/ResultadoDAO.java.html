@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResultadoDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Formula1APP</a> &gt; <a href="index.source.html" class="el_package">co.com.dao</a> &gt; <span class="el_source">ResultadoDAO.java</span></div><h1>ResultadoDAO.java</h1><pre class="source lang-java linenums">package co.com.dao;
 
 import co.com.model.Resultado;
-import co.com.util.JPAUtil;
-import co.com.util.JDBCUtil;
+import co.com.util.DatabaseManager;  // Mejora: Importar la nueva clase de gestión de conexiones
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.slf4j.Logger;
@@ -16,15 +15,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-<span class="fc" id="L19">public class ResultadoDAO {</span>
-<span class="fc" id="L20">    private static final Logger logger = LoggerFactory.getLogger(ResultadoDAO.class);</span>
+<span class="fc" id="L18">public class ResultadoDAO {</span>
+<span class="fc" id="L19">    private static final Logger logger = LoggerFactory.getLogger(ResultadoDAO.class);</span>
+<span class="fc" id="L20">    private final DatabaseManager dbManager = new DatabaseManager();  // Mejora: Inyectar DatabaseManager para DIP y SRP</span>
 
     public List&lt;Resultado&gt; findByCarrera(Long carreraId) {
 <span class="fc bfc" id="L23" title="All 2 branches covered.">        if (carreraId == null) {</span>
 <span class="fc" id="L24">            throw new RuntimeException(&quot;El ID de la carrera no puede ser nulo&quot;);</span>
         }
 
-<span class="fc" id="L27">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L27">        EntityManager em = dbManager.getEntityManager();</span>
         try {
 <span class="fc" id="L29">            TypedQuery&lt;Resultado&gt; query = em.createQuery(</span>
                     &quot;SELECT r FROM Resultado r &quot; +
@@ -40,7 +40,7 @@ import java.util.Map;
 <span class="fc" id="L40">            logger.error(&quot;Error al listar resultados por carrera: &quot; + carreraId, e);</span>
 <span class="fc" id="L41">            throw new RuntimeException(&quot;Error al obtener resultados&quot;, e);</span>
         } finally {
-<span class="fc" id="L43">            JPAUtil.close(em);</span>
+<span class="fc" id="L43">            dbManager.closeEntityManager(em);</span>
         }
     }
 
@@ -55,7 +55,7 @@ import java.util.Map;
 <span class="fc" id="L55">            throw new RuntimeException(&quot;El resultado debe tener un piloto asociado&quot;);</span>
         }
 
-<span class="fc" id="L58">        EntityManager em = JPAUtil.getEntityManager();</span>
+<span class="fc" id="L58">        EntityManager em = dbManager.getEntityManager();</span>
         try {
 <span class="fc" id="L60">            em.getTransaction().begin();</span>
 <span class="fc" id="L61">            em.persist(resultado);</span>
@@ -67,7 +67,7 @@ import java.util.Map;
             }
 <span class="fc" id="L68">            throw new RuntimeException(&quot;Error al guardar resultado&quot;, e);</span>
         } finally {
-<span class="fc" id="L70">            JPAUtil.close(em);</span>
+<span class="fc" id="L70">            dbManager.closeEntityManager(em);</span>
         }
     }
 
@@ -123,7 +123,7 @@ import java.util.Map;
 
 <span class="fc" id="L124">        List&lt;Map&lt;String, Object&gt;&gt; clasificacion = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L126">        try (Connection conn = JDBCUtil.getConnection();</span>
+<span class="fc" id="L126">        try (Connection conn = dbManager.getConnection();  // Mejora: Usar dbManager para obtener Connection</span>
 <span class="fc" id="L127">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
 
 <span class="fc" id="L129">            stmt.setInt(1, anio);</span>
@@ -199,7 +199,7 @@ import java.util.Map;
 
 <span class="fc" id="L200">        List&lt;Map&lt;String, Object&gt;&gt; clasificacion = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L202">        try (Connection conn = JDBCUtil.getConnection();</span>
+<span class="fc" id="L202">        try (Connection conn = dbManager.getConnection();  // Mejora: Usar dbManager para obtener Connection</span>
 <span class="fc" id="L203">             PreparedStatement stmt = conn.prepareStatement(sql)) {</span>
 
 <span class="fc" id="L205">            stmt.setInt(1, anio);</span>
@@ -225,6 +225,22 @@ import java.util.Map;
 <span class="fc" id="L225">        } catch (Exception e) {</span>
 <span class="fc" id="L226">            logger.error(&quot;Error al obtener clasificación de constructores&quot;, e);</span>
 <span class="fc" id="L227">            throw new RuntimeException(&quot;Error al obtener clasificación de constructores&quot;, e);</span>
+        }
+    }
+    public long countByCarrera(Long carreraId) {
+<span class="fc" id="L231">        EntityManager em = dbManager.getEntityManager();</span>
+        try {
+<span class="fc" id="L233">            TypedQuery&lt;Long&gt; query = em.createQuery(</span>
+                    &quot;SELECT COUNT(r) FROM Resultado r WHERE r.carrera.id = :carreraId&quot;,
+                    Long.class
+            );
+<span class="fc" id="L237">            query.setParameter(&quot;carreraId&quot;, carreraId);</span>
+<span class="fc" id="L238">            return query.getSingleResult();</span>
+<span class="nc" id="L239">        } catch (Exception e) {</span>
+<span class="nc" id="L240">            logger.error(&quot;Error al contar resultados de la carrera ID: {}&quot;, carreraId, e);</span>
+<span class="nc" id="L241">            return 0;</span>
+        } finally {
+<span class="fc" id="L243">            dbManager.closeEntityManager(em);</span>
         }
     }
 }
