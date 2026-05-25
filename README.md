@@ -1,4 +1,4 @@
-# Formula1APP — Informe de Pruebas
+# Formula1APP 
 
 ## 1. Descripción del Proyecto
 
